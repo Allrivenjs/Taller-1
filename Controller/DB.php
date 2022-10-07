@@ -5,8 +5,7 @@ class DB
     private string $host = "localhost";
     private string $database = "deswebii";
     private static DB $instance;
-    private int $rol=0;
-    public $connection;
+    private $connection;
 
     /**
      * @throws Exception
@@ -24,26 +23,29 @@ class DB
     /**
      * @throws PDOException
      */
-    private function ResetDefaultConnection(): void
+    private function ResetDefaultConnection($Rol): void
     {
-        $User='';
-        $Pass='';
-        switch ($this->rol) {
-            case 0:$User='defaultuser';$Pass='defaultuserpassword';break;
-            case 1:$User='client';$Pass='clientpassword';break;
-            case 2:$User='admin';$Pass='adminpassword';break;
+        $UserDB='defaultuser';
+        $Pass='defaultuserpassword';
+        if (isset($Rol)){
+            /*
+             * check if the variable exists, otherwise access is given with the default user.
+             * */
+            switch ($Rol) {
+                case 1:$UserDB='client';$Pass='clientpassword';break;
+                case 2:$UserDB='admin';$Pass='adminpassword';break;
+            }
         }
-        $this->connection = mysqli_connect($this->host,$User, $Pass, $this->database);
+        $this->connection = mysqli_connect($this->host,$UserDB, $Pass, $this->database);
     }
 
-    public function changeRol($newRol):void{
+    public function changeConnectionRol($Rol):void{
         /*
          * Method to change the role of the database "reestablishes
          * the connection with the user of the one corresponding
          * to his role"
          * */
-        $this->rol=$newRol;
-        $this->ResetDefaultConnection();
+        $this->ResetDefaultConnection($Rol);
     }
 
     public function getConnection(){
