@@ -1,0 +1,27 @@
+{
+    "name": "jaime/bancarapida",
+    "autoload": {
+        "psr-4": {
+            "Controllers\\": "controllers/",
+            "Database\\": "database/",
+            "Models\\": "model/",
+            "Routes\\": "routes/",
+            "Traits\\": "traits/",
+            "Config\\": "config/",
+            "Middleware\\": "middleware/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Allrivenjs",
+            "email": "69703004+Allrivenjs@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "siriusphp/validation": "^3.1",
+        "phroute/phroute": "^2.2",
+        "vlucas/phpdotenv": "^5.4",
+        "zendframework/zend-diactoros": "^1.3",
+        "larapack/dd": "^1.1"
+    }
+}
