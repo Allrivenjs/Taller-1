@@ -9,6 +9,7 @@ $router->get('/', function () {
 
 
 $router->group(['prefix'=> 'api'], function (RouteCollector $router){
+
     $router->get('/login', 'App\Controllers\AuthController@login');
 
     $router->group(['before' => 'auth'], function(RouteCollector $router){

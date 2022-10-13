@@ -1,5 +1,5 @@
 <?php
-namespace Middleware;
+namespace App\Middleware;
 
 use JetBrains\PhpStorm\NoReturn;
 use Phroute\Phroute\RouteCollector;
