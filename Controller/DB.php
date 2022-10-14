@@ -21,6 +21,8 @@ class DB
     }
 
     /**
+     * @param null $Rol
+     * @return void
      * @throws PDOException
      */
     private function ResetDefaultConnection($Rol = null): void
@@ -75,8 +77,9 @@ class DB
 
     /**
      * @throws Exception
+     * @return void
      */
-    public function __wakeup()
+    public function __wakeup():void
     {
         /*
          * to prevent serialization.
