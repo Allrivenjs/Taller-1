@@ -28,9 +28,9 @@ class SendEmailController
             $mail->SMTPAuth      = true;
 
             // Credenciales de la cuenta
-            $email              = 'email@gmail.com';
+            $email              = 'correo@gmail.com';
             $mail->Username     = $email;
-            $mail->Password     = '***************';
+            $mail->Password     = '****************';
 
             // Quien envía este mensaje
             $mail->setFrom($email, 'BANCA RAPIDA');
@@ -216,7 +216,8 @@ class SendEmailController
                 
                                       <p>
                                       Bancarapida le informa que su transaccion fue exitosa, 
-                                      continuacion vera los datos de la transaccion gracias por confiar en nosotros
+                                      acontinuacion vera los datos de la transaccion,
+                                      gracias por confiar en nosotros
                                        (灬♥ω♥灬)
                                       </p>
                                     </div>
@@ -266,6 +267,13 @@ class SendEmailController
                                         <td style='padding: 0 15px'></td>
                                         <td style='padding: 0 0 0 15px' align='right'>
                                           $0
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style='padding: 0 15px 5px 0'>Fecha</td>
+                                        <td style='padding: 0 15px'></td>
+                                        <td style='padding: 0 0 0 15px' align='right'>
+                                          " . date('d F Y, h:i:s A') . "
                                         </td>
                                       </tr>
                                       <tr
@@ -320,11 +328,11 @@ class SendEmailController
                                         color: #525252;
                                       '
                                     >
-                                      BANCARAPIDA<br />DW2<br />
+                                      BancaRapida<br />DW2<br />
                                       <a
                                         href='#'
                                         style='color: #2f67f6'
-                                        >BANCARAPIDA.net</a
+                                        >bancarapida.net</a
                                       >
                                     </div>
                                   </td>
