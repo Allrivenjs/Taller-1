@@ -1,26 +1,23 @@
 <?php
-
 use Phroute\Phroute\RouteCollector;
+
 $router = Config\Providers\RouteServiceProviders::getInstance()->getRouter();
 
 $router->get('/', function () {
-    echo 'Hello World!';
+    echo 'Hello world';
 });
 
+$router->get('/uwu', function () {
+    echo 'uwu';
+});
 
-$router->group(['prefix'=> 'api'], function (RouteCollector $router){
+$router->group(['prefix' => 'api'], function (RouteCollector $router) {
     $router->get('/login', 'App\Controllers\AuthController@login');
 
-    $router->group(['before' => 'auth'], function(RouteCollector $router){
+    $router->group(['before' => 'auth'], function (RouteCollector $router) {
 
-        $router->get('/posts', function(){
+        $router->get('/posts', function () {
             echo 'posts';
         });
-
     });
-
 });
-
-
-
-
