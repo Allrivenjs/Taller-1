@@ -4,47 +4,52 @@ namespace Controllers\Email;
 
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 
 class SendEmailController
 {
-    public function sendEmail($userMail, $userName, $valueSent)
-    {
-        try {
-            // Intancia de PHPMailer
-            $mail = new PHPMailer();
+  /**
+   * @param $userMail
+   * @param $userName
+   * @param $valueSent
+   * @return string
+   */
+  public function sendEmail($userMail, $userName, $valueSent)
+  {
+    try {
+      // Intancia de PHPMailer
+      $mail = new PHPMailer();
 
-            // Es necesario para poder usar un servidor SMTP como gmail
-            $mail->isSMTP();
+      // Es necesario para poder usar un servidor SMTP como gmail
+      $mail->isSMTP();
 
-            //Set the hostname of the mail server
-            $mail->Host          = 'smtp.gmail.com';
-            $mail->Port          = 465;
+      //Set the hostname of the mail server
+      $mail->Host          = 'smtp.gmail.com';
+      $mail->Port          = 465;
 
-            // Propiedad para establecer la seguridad de encripción de la comunicación
-            $mail->SMTPSecure    = PHPMailer::ENCRYPTION_SMTPS;
+      // Propiedad para establecer la seguridad de encripción de la comunicación
+      $mail->SMTPSecure    = PHPMailer::ENCRYPTION_SMTPS;
 
-            // Para activar la autenticación smtp del servidor
-            $mail->SMTPAuth      = true;
+      // Para activar la autenticación smtp del servidor
+      $mail->SMTPAuth      = true;
 
-            // Credenciales de la cuenta
-            $email              = 'correo@gmail.com';
-            $mail->Username     = $email;
-            $mail->Password     = '****************';
+      // Credenciales de la cuenta
+      $email              = 'correo@gmail.com';
+      $mail->Username     = $email;
+      $mail->Password     = '****************';
 
-            // Quien envía este mensaje
-            $mail->setFrom($email, 'BANCA RAPIDA');
+      // Quien envía este mensaje
+      $mail->setFrom($email, 'BANCA RAPIDA');
 
-            // Destinatario
-            $mail->addAddress($userMail, 'Hola ', $userName);
+      // Destinatario
+      $mail->addAddress($userMail, 'Hola ', $userName);
 
-            // Asunto del correo
-            $mail->Subject = 'BancaRapida le informa';
+      // Asunto del correo
+      $mail->Subject = 'BancaRapida le informa';
 
-            // Contenido
-            $mail->IsHTML(true);
-            $mail->CharSet = 'UTF-8';
-            $mail->Body    = "
+      // Contenido
+      $mail->IsHTML(true);
+      $mail->CharSet = 'UTF-8';
+      $mail->Body    = "
             <!DOCTYPE html>
             <html>
               <head>
@@ -347,24 +352,22 @@ class SendEmailController
                 </div>
                 </body>
             </html>
-            
-            
             ";
 
-            // Texto alternativo
-            $mail->AltBody = 'BANCA RAPIDA LE INFORMA';
+      // Texto alternativo
+      $mail->AltBody = 'BANCA RAPIDA LE INFORMA';
 
-            // Agregar algún adjunto
-            //$mail->addAttachment(IMAGES_PATH.'logo.png');
+      // Agregar algún adjunto
+      //$mail->addAttachment(IMAGES_PATH.'logo.png');
 
-            // Enviar el correo
-            if (!$mail->send()) {
-                throw new Exception($mail->ErrorInfo);
-            }
+      // Enviar el correo
+      if (!$mail->send()) {
+        throw new Exception($mail->ErrorInfo);
+      }
 
-            return 'Correo enviado';
-        } catch (Exception $e) {
-            throw new Exception($e);
-        }
+      return 'Correo enviado';
+    } catch (Exception $e) {
+      throw new Exception($e);
     }
+  }
 }
