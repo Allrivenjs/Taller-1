@@ -28,9 +28,9 @@ class SendEmailController
             $mail->SMTPAuth      = true;
 
             // Credenciales de la cuenta
-            $email              = 'jojo25uwu@gmail.com';
+            $email              = 'email@gmail.com';
             $mail->Username     = $email;
-            $mail->Password     = 'ajsfiincmsbefbmy';
+            $mail->Password     = '***************';
 
             // Quien envía este mensaje
             $mail->setFrom($email, 'BANCA RAPIDA');
