@@ -7,11 +7,9 @@ $router->get('/', function () {
     echo 'Hello world';
 });
 
-$router->get('/uwu', function () {
-    echo 'uwu';
-});
 
-$router->group(['prefix' => 'api'], function (RouteCollector $router) {
+$router->group(['prefix'=> 'api'], function (RouteCollector $router){
+
     $router->get('/login', 'App\Controllers\AuthController@login');
 
     $router->group(['before' => 'auth'], function (RouteCollector $router) {

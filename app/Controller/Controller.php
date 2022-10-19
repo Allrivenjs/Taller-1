@@ -1,13 +1,13 @@
 <?php
 
-namespace Controllers;
-
-use Database\Database;
+namespace App\Controller;
+use App\Database\Database;
+use Exception;
 
 class Controller
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public static function instanceDatabase(): Database
     {

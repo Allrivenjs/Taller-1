@@ -1,6 +1,6 @@
 <?php
 
-namespace Database;
+namespace App\Database;
 
 use Exception;
 use mysqli_sql_exception;
@@ -54,7 +54,7 @@ class Database
     {
         $this->changeUserAndPass($user, $password);
         /*
-         * Method to change the role of the database "reestablishes
+         * Method to change the role of the Database "reestablishes
          * the connection with the user of the one corresponding
          * to his role"
          * */

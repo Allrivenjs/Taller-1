@@ -3,8 +3,11 @@ ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 require_once '../vendor/autoload.php';
+
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/..');
 $dotenv->load();
+
+getenv('APP_ENV') === 'development' ? error_reporting(E_ALL) : error_reporting(0);
 
 /**
  * @return string

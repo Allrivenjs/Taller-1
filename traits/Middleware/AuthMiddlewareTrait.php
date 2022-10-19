@@ -2,7 +2,6 @@
 
 namespace Traits\Middleware;
 
-use Database\Database;
 use Exception;
 
 class AuthMiddlewareTrait
