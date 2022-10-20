@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f5ac41dc-3dd0-4bbb-8b2b-eb77c43109fa" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/RegisterMiddleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/RegisterMiddleware.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Auth/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controller/Auth/AuthController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controller/Controller.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/Database.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Database/Database.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/Middleware.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Middleware/Middleware.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/app/Middleware/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/traits/Middleware/AuthMiddlewareTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/traits/Middleware/AuthMiddlewareTrait.php" afterDir="false" />
-    </list>
+    <list default="true" id="f5ac41dc-3dd0-4bbb-8b2b-eb77c43109fa" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -51,15 +39,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/jaime/Documents/Develop/easywork-backend",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\jaime\Documents\Develop\bancarapida\app" />
@@ -75,6 +64,7 @@
       <updated>1665584104366</updated>
       <workItem from="1665584106053" duration="1648000" />
       <workItem from="1665609996973" duration="649000" />
+      <workItem from="1666048928390" duration="37000" />
     </task>
     <servers />
   </component>
