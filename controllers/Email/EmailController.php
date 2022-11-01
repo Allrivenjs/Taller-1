@@ -13,7 +13,7 @@ class SendEmailController
    * @param $valueSent
    * @return string
    */
-  public function sendEmail($userMail, $userName, $valueSent)
+  public function sendEmail($userMail, $userName, $valueSent = "0", $accountType = "ahorro", $typeTransfer = "externa", $isReceiving = true)
   {
     try {
       // Intancia de PHPMailer
@@ -33,9 +33,9 @@ class SendEmailController
       $mail->SMTPAuth      = true;
 
       // Credenciales de la cuenta
-      $email              = 'correo@gmail.com';
+      $email              = 'bancarapidanoreply@gmail.com';
       $mail->Username     = $email;
-      $mail->Password     = '****************';
+      $mail->Password     = 'twsmkayxanqoxnks';
 
       // Quien envía este mensaje
       $mail->setFrom($email, 'BANCA RAPIDA');
@@ -45,6 +45,10 @@ class SendEmailController
 
       // Asunto del correo
       $mail->Subject = 'BancaRapida le informa';
+
+
+      $resultado = $isReceiving ? '+' : '-';
+      $receiving = $isReceiving ? 'dinero enviado' : 'dinero recibido';
 
       // Contenido
       $mail->IsHTML(true);
@@ -220,10 +224,9 @@ class SendEmailController
                                       <p>Hola " . $userName . "</p>
                 
                                       <p>
-                                      Bancarapida le informa que su transaccion fue exitosa, 
-                                      acontinuacion vera los datos de la transaccion,
-                                      gracias por confiar en nosotros
-                                       (灬♥ω♥灬)
+                                      Bancarapida le informa que la transaccion a su cuenta de " . $accountType . " fue exitosa, 
+                                      acontinuacion vera los datos de la transaccion de tipo " . $typeTransfer . ",
+                                      gracias por confiar en nosotros.
                                       </p>
                                     </div>
                                   </td>
@@ -261,10 +264,10 @@ class SendEmailController
                                         </th>
                                       </tr>
                                       <tr>
-                                        <td style='padding: 5px 15px 5px 0'>Dinero enviado</td>
+                                        <td style='padding: 5px 15px 5px 0'>" . $receiving . "</td>
                                         <td style='padding: 0 15px'></td>
                                         <td style='padding: 0 0 0 15px' align='right'>
-                                          $" . $valueSent . "
+                                          " . $resultado . " $" . $valueSent . "
                                         </td>
                                       </tr>
                                       <tr>

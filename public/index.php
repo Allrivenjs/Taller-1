@@ -39,6 +39,7 @@ function request_path(): string
         $path = substr($path, 0, $position);
     }
     return $path;
+
 }
 
 try{
