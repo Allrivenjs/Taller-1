@@ -2,11 +2,6 @@
 
 namespace App\Controller\Auth;
 
-<<<<<<< HEAD
-class AuthController
-{
-
-=======
 use App\Database\Database;
 use Exception;
 use Firebase\JWT\JWT;
@@ -15,12 +10,9 @@ use Symfony\Component\VarDumper\Cloner\Data;
 
 class AuthController
 {
-
-
     public function __construct(){
 
     }
-
 
     /**
      * @throws Exception
@@ -90,5 +82,4 @@ class AuthController
      * Sebastian Quinchia Lobo
      * */
 
->>>>>>> c4ae6cfc27cef11bc299aa885e0c09034c9295a4
 }
