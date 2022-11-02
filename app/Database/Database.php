@@ -7,8 +7,8 @@ use mysqli_sql_exception;
 
 class Database
 {
-    private string $host = "localhost";
-    private string $database = "deswebii";
+    private string $host;
+    private string $database;
     private static Database $instance;
     private mysqli $connection; //u can't use mixed is crazy, don't try again... this it is a formal definition
 
@@ -17,6 +17,8 @@ class Database
      */
     private function __construct()
     {
+        $this->host = getenv("DB_HOST");
+        $this->database = getenv("DB_NAME");
         if (!isset($this->connection)) {
             try {
                 $this->ResetDefaultConnection();
@@ -27,37 +29,37 @@ class Database
     }
 
     /**
-     * @param null $Rol
+     * @param int|null $Rol
      * @return void
-     * @throws mysqli_sql_exception
      */
-    private function ResetDefaultConnection($Rol = null): void
+    private function ResetDefaultConnection(int $Rol = null): void
     {
-        $UserDB = 'root';
-        $Pass = '';
+        $UserDB = getenv('DB_USER_DEFAULT');
+        $Pass = getenv('DB_PASS_DEFAULT');
         if (isset($Rol)) {
             /*
              * check if the variable exists, otherwise access is given with the default user.
              * */
             switch ($Rol) {
                 case 1:
-                    $UserDB = 'client';
-                    $Pass = 'clientpassword';
+                    $UserDB = getenv('DB_USER_CLIENT');
+                    $Pass = getenv('DB_PASS_CLIENT');
                     break;
                 case 2:
-                    $UserDB = 'admin';
-                    $Pass = 'adminpassword';
+                    $UserDB = getenv('DB_USER_ADMIN');
+                    $Pass = getenv('DB_PASS_ADMIN');
                     break;
             }
         }
+
         $this->connection = mysqli_connect($this->host, $UserDB, $Pass, $this->database);
     }
 
     /**
-     * @param $Rol
+     * @param int $Rol
      * @return void
      */
-    public function changeConnectionRol($Rol): void
+    public function changeConnectionRol(int $Rol): void
     {
         /*
          * Method to change the role of the database "reestablishes

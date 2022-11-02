@@ -1,5 +1,6 @@
 <?php
 
+use App\Controller\Auth\AuthController;
 use Phroute\Phroute\RouteCollector;
 $router = Config\Providers\RouteServiceProviders::getInstance()->getRouter();
 
@@ -10,7 +11,7 @@ $router->get('/', function () {
 
 $router->group(['prefix'=> 'api'], function (RouteCollector $router){
 
-    $router->get('/login', 'App\Controllers\AuthController@login');
+    $router->post('/login', [AuthController::class, 'Login']);
 
     $router->group(['before' => 'auth'], function(RouteCollector $router){
 
