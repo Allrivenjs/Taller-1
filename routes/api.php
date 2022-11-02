@@ -13,6 +13,16 @@ $router->get('/', function () {
 });
 
 $router->post('/sendmail', function () {
+    // {
+    //     "email":"correo@gmail.com",
+    //     "userName":"Hola mundo",
+    //     "valueSent": "20000",
+    //     "accountType":"ahorro",
+    //     "typeTransfer":"externa",
+    //     "isReceiving":false,
+    //     "isFaild":false
+    //   }
+
     try {
         $controller = new SendEmailController();
         $data = json_decode(file_get_contents("php://input"));
@@ -20,7 +30,7 @@ $router->post('/sendmail', function () {
             throw new Exception('no data');
             exit;
         }
-        $resp  = $controller->sendEmail($data->email, $data->userName, $data->valueSent, $data->accountType, $data->typeTransfer, $data->isReceiving);
+        $resp  = $controller->sendEmail($data->email, $data->userName, $data->valueSent, $data->accountType, $data->typeTransfer, $data->isReceiving, $data->isFaild);
         $response = array("code" => 200, "msg" => "Mail sent successfully", "mail" => $resp);
         return json_encode(["response" => $response]);
     } catch (Exception $ex) {
@@ -29,7 +39,7 @@ $router->post('/sendmail', function () {
     }
 });
 
-$router->group(['prefix'=> 'api'], function (RouteCollector $router){
+$router->group(['prefix' => 'api'], function (RouteCollector $router) {
 
     $router->get('/login', 'App\Controllers\AuthController@login');
 

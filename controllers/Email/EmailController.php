@@ -13,7 +13,7 @@ class SendEmailController
    * @param $valueSent
    * @return string
    */
-  public function sendEmail($userMail, $userName, $valueSent = "0", $accountType = "ahorro", $typeTransfer = "externa", $isReceiving = true)
+  public function sendEmail($userMail, $userName, $valueSent = "0", $accountType = "ahorro", $typeTransfer = "externa", $isReceiving = true, $isFaild = false)
   {
     try {
       // Intancia de PHPMailer
@@ -47,8 +47,74 @@ class SendEmailController
       $mail->Subject = 'BancaRapida le informa';
 
 
-      $resultado = $isReceiving ? '+' : '-';
-      $receiving = $isReceiving ? 'dinero enviado' : 'dinero recibido';
+      $resultado = $isReceiving ? "-" : "+";
+      $receiving = $isReceiving ? "dinero enviado" : "dinero recibido";
+      $faild = $isFaild ? "rechazada" : "exitosa";
+      $faildTitle = $isFaild ? "Transaccion rechazada" : "Transaccion exitosa";
+      $faildTable = $isFaild ? "rechazada" : "<table
+      border='0'
+      style='
+        color: #000;
+        font-size: 13px;
+        line-height: 22px;
+        table-layout: auto;
+        width: 100%;
+      '
+    >
+      <tr
+        style='
+          border-bottom: 1px solid #ecedee;
+          text-align: left;
+        '
+      >
+        <th style='padding: 0 15px 10px 0'>Datos</th>
+        <th style='padding: 0 15px'></th>
+        <th style='padding: 0 0 0 15px' align='right'>
+          Dinero
+        </th>
+      </tr>
+      <tr>
+        <td style='padding: 5px 15px 5px 0'>" . $receiving . "</td>
+        <td style='padding: 0 15px'></td>
+        <td style='padding: 0 0 0 15px' align='right'>
+          " . $resultado . " $" . $valueSent . "
+        </td>
+      </tr>
+      <tr>
+        <td style='padding: 0 15px 5px 0'>Costo de la transaccion</td>
+        <td style='padding: 0 15px'></td>
+        <td style='padding: 0 0 0 15px' align='right'>
+          $0
+        </td>
+      </tr>
+      <tr>
+        <td style='padding: 0 15px 5px 0'>Fecha</td>
+        <td style='padding: 0 15px'></td>
+        <td style='padding: 0 0 0 15px' align='right'>
+          " . date('d F Y, h:i:s A') . "
+        </td>
+      </tr>
+      <tr
+        style='
+          border-bottom: 2px solid #ecedee;
+          text-align: left;
+          padding: 15px 0;
+        '
+      >
+        <td
+          style='padding: 5px 15px 5px 0; font-weight: bold'
+        >
+          TOTAL
+        </td>
+        <td style='padding: 0 15px'></td>
+        <td
+          style='padding: 0 0 0 15px; font-weight: bold'
+          align='right'
+        >
+           " . $resultado . "$" . $valueSent . "
+        </td>
+      </tr>
+    </table>";
 
       // Contenido
       $mail->IsHTML(true);
@@ -199,7 +265,7 @@ class SendEmailController
                                         color: #525252;
                                       '
                                     >
-                                        Transaccion exitosa
+                                        " . $faildTitle . "
                                     </div>
                                   </td>
                                 </tr>
@@ -224,7 +290,7 @@ class SendEmailController
                                       <p>Hola " . $userName . "</p>
                 
                                       <p>
-                                      Bancarapida le informa que la transaccion a su cuenta de " . $accountType . " fue exitosa, 
+                                      Bancarapida le informa que la transaccion a su cuenta de " . $accountType . " fue " . $faild . ", 
                                       acontinuacion vera los datos de la transaccion de tipo " . $typeTransfer . ",
                                       gracias por confiar en nosotros.
                                       </p>
@@ -241,70 +307,7 @@ class SendEmailController
                                       word-break: break-word;
                                     '
                                   >
-                                    <table
-                                      border='0'
-                                      style='
-                                        color: #000;
-                                        font-size: 13px;
-                                        line-height: 22px;
-                                        table-layout: auto;
-                                        width: 100%;
-                                      '
-                                    >
-                                      <tr
-                                        style='
-                                          border-bottom: 1px solid #ecedee;
-                                          text-align: left;
-                                        '
-                                      >
-                                        <th style='padding: 0 15px 10px 0'>Datos</th>
-                                        <th style='padding: 0 15px'></th>
-                                        <th style='padding: 0 0 0 15px' align='right'>
-                                          Dinero
-                                        </th>
-                                      </tr>
-                                      <tr>
-                                        <td style='padding: 5px 15px 5px 0'>" . $receiving . "</td>
-                                        <td style='padding: 0 15px'></td>
-                                        <td style='padding: 0 0 0 15px' align='right'>
-                                          " . $resultado . " $" . $valueSent . "
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style='padding: 0 15px 5px 0'>Costo de la transaccion</td>
-                                        <td style='padding: 0 15px'></td>
-                                        <td style='padding: 0 0 0 15px' align='right'>
-                                          $0
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td style='padding: 0 15px 5px 0'>Fecha</td>
-                                        <td style='padding: 0 15px'></td>
-                                        <td style='padding: 0 0 0 15px' align='right'>
-                                          " . date('d F Y, h:i:s A') . "
-                                        </td>
-                                      </tr>
-                                      <tr
-                                        style='
-                                          border-bottom: 2px solid #ecedee;
-                                          text-align: left;
-                                          padding: 15px 0;
-                                        '
-                                      >
-                                        <td
-                                          style='padding: 5px 15px 5px 0; font-weight: bold'
-                                        >
-                                          TOTAL
-                                        </td>
-                                        <td style='padding: 0 15px'></td>
-                                        <td
-                                          style='padding: 0 0 0 15px; font-weight: bold'
-                                          align='right'
-                                        >
-                                            $" . $valueSent . "
-                                        </td>
-                                      </tr>
-                                    </table>
+                                    " . $faildTable . "
                                   </td>
                                 </tr>
                 
