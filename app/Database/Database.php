@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Database;
-
 use Exception;
+use mysqli;
 use mysqli_sql_exception;
 
 class Database
@@ -10,95 +10,114 @@ class Database
     private string $host = "localhost";
     private string $database = "deswebii";
     private static Database $instance;
-    private mixed $connection;
-    private string $user;
-    private string $password;
+    private mysqli $connection; //u can't use mixed is crazy, don't try again... this it is a formal definition
 
     /**
      * @throws Exception
      */
-    private function __construct(){
-        if(!isset($this->connection)){
-            try{
+    private function __construct()
+    {
+        if (!isset($this->connection)) {
+            try {
                 $this->ResetDefaultConnection();
-                $this->setAsGlobal();
-            }catch(mysqli_sql_exception){
+            } catch (mysqli_sql_exception) {
                 throw new Exception('Error de conexion a la base de datos');
             }
         }
     }
 
     /**
+     * @param null $Rol
+     * @return void
      * @throws mysqli_sql_exception
      */
-    private function ResetDefaultConnection(): void
+    private function ResetDefaultConnection($Rol = null): void
     {
-        $this->connection = mysqli_connect($this->host,$this->user, $this->password, $this->database);
+        $UserDB = 'root';
+        $Pass = '';
+        if (isset($Rol)) {
+            /*
+             * check if the variable exists, otherwise access is given with the default user.
+             * */
+            switch ($Rol) {
+                case 1:
+                    $UserDB = 'client';
+                    $Pass = 'clientpassword';
+                    break;
+                case 2:
+                    $UserDB = 'admin';
+                    $Pass = 'adminpassword';
+                    break;
+            }
+        }
+        $this->connection = mysqli_connect($this->host, $UserDB, $Pass, $this->database);
     }
 
     /**
+     * @param $Rol
      * @return void
      */
-    public function setAsGlobal(): void
+    public function changeConnectionRol($Rol): void
     {
-        static::$instance = $this;
-    }
-
-
-    /**
-     * @param null $user
-     * @param null $password
-     * @return void
-     */
-    public function changeConnectionRol($user = null, $password = null):void
-    {
-        $this->changeUserAndPass($user, $password);
         /*
-         * Method to change the role of the Database "reestablishes
+         * Method to change the role of the database "reestablishes
          * the connection with the user of the one corresponding
          * to his role"
          * */
-        $this->ResetDefaultConnection();
+        $this->ResetDefaultConnection($Rol);
     }
 
     /**
-     * @param $user
-     * @param $password
-     * @return void
+     * @return mysqli
      */
-    private function changeUserAndPass($user, $password): void
+    public function getConnection(): mysqli
     {
-        $this->user = $user ?? $this->user;
-        $this->password = $password ?? $this->password;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getConnection(): mixed
-    {
+        if (!isset($this->connection)) {
+            $this->ResetDefaultConnection();
+        }
         return $this->connection;
     }
 
     /**
+     * @return Database
      * @throws Exception
      */
-    public static function getInstance():Database
+    public static function getInstance(): Database
     {
-        if(!isset(self::$instance)){
+        if (!isset(self::$instance)) {
             self::$instance = new self;
         }
         return self::$instance;
     }
 
-    private function __wakeup()
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function __wakeup(): void
     {
-        //to prevent serialization
+        /*
+         * to prevent serialization.
+         * your visibility must be public
+         * */
+        throw new Exception('No puedes serializar');
     }
 
+    /**
+     * @throws Exception
+     */
     private function __clone()
     {
         //to prevent duplication
+        throw new Exception('No puedes clonar esta clase');
     }
 
+
+    /*
+     * Made in Colombia by:
+     * Carlos Daniel Castro Maussa
+     * Juan Guillermo Florez Burgos
+     * Daniela Salazar Gonzalez
+     * Sebastian Quinchia Lobo
+     * */
 }
