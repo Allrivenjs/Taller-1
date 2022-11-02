@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f5ac41dc-3dd0-4bbb-8b2b-eb77c43109fa" name="Changes" comment="" />
+    <list default="true" id="f5ac41dc-3dd0-4bbb-8b2b-eb77c43109fa" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,7 +47,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/jaime/Documents/Develop/easywork-backend",
+    "last_opened_file_path": "/home/allrivenjs/Programing/Taller-1",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
@@ -65,6 +68,7 @@
       <workItem from="1665584106053" duration="1648000" />
       <workItem from="1665609996973" duration="649000" />
       <workItem from="1666048928390" duration="37000" />
+      <workItem from="1667334330478" duration="856000" />
     </task>
     <servers />
   </component>
