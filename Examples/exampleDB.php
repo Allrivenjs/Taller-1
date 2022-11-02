@@ -1,6 +1,6 @@
 <?php
 
-require_once "../Controller/DB.php";
+use App\Database\Database;
 
 /*
  * ¿How to use DB class with the pattern Singleton?
@@ -8,7 +8,7 @@ require_once "../Controller/DB.php";
  * */
 
 try {
-    DB::getInstance()->getConnection();
+    Database::getInstance()->getConnection();
 } catch (Exception $e) {
     /*
      * ¡U can check problems here!

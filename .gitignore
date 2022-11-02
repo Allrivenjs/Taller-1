@@ -4,4 +4,7 @@
 composer.lock
 /vendor/
 .idea/
+<<<<<<< HEAD
 *.xml
+=======
+>>>>>>> c4ae6cfc27cef11bc299aa885e0c09034c9295a4
