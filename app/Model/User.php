@@ -2,6 +2,8 @@
 
 namespace App\Model;
 
+use Zend\Diactoros\Request;
+
 class User
 {
     private String $names = '';
@@ -11,6 +13,5 @@ class User
     public function __construct(){
 
     }
-
 
 }

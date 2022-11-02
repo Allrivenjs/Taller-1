@@ -16,6 +16,11 @@ class AuthController
 
     }
 
+    public function SignOut(): Void{
+        $request = Request::capture();
+        $UserData = $request->only('email', 'password','names', 'lastnames', 'address', 'phone', 'gender', 'dob');
+        $insert_user = "SELECT id_user,fk_rol FROM user WHERE email = '$temp_email' AND password = '$temp_pass'";
+    }
 
     /**
      * @throws Exception
