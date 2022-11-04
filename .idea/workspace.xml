@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f5ac41dc-3dd0-4bbb-8b2b-eb77c43109fa" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/Cors/Cors.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/Cors/Cors.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +69,8 @@
       <workItem from="1665609996973" duration="649000" />
       <workItem from="1666048928390" duration="37000" />
       <workItem from="1667334330478" duration="856000" />
-      <workItem from="1667599143697" duration="132000" />
+      <workItem from="1667599143697" duration="146000" />
+      <workItem from="1667599314589" duration="91000" />
     </task>
     <servers />
   </component>
