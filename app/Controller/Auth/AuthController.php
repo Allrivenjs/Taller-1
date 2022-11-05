@@ -18,10 +18,24 @@ class AuthController
 
     public function SignOut(): void
     {
-        #$request = Request::capture();
-        #$UserData = $request->only('email', 'password', 'names', 'lastnames', 'address', 'phone', 'gender', 'dob');
-        #$insert_user = "INSERT INTO user VALUES ($UserDatatext)";
-        #print($insert_user);
+        $request = Request::capture();
+        $UserData = $request->only('id_user', 'names', 'lastnames', 'email', 'dob', 'phone', 'address', 'password');
+        $UserDataText = sprintf("'%s'", implode("','",$UserData));
+        $insert_user = "INSERT INTO `user` (`id_user`, `names`, `lastnames`, `email`, `dob`, `phone`, `address`, `password`) VALUES ($UserDataText);";
+        $ConDB = Database::getInstance()->getConnection(); //Conection to Database
+        try {
+            mysqli_query($ConDB, $insert_user);
+            if($ConDB->affected_rows==1){
+                //Response OK
+                http_response_code(200);
+                print(json_encode(array('detail' => 'Usuario registrado correctamente')));
+            }
+        }catch (\mysqli_sql_exception $e){
+            //Exception control if the user is already registered or any other error.
+            http_response_code(403);
+            print(json_encode(array('detail' => 'El usuario ya existe o alguno de los campos es incorrecto.')));
+        }
+
     }
 
     /**
