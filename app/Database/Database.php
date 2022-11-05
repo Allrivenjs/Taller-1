@@ -1,37 +1,75 @@
 <?php
 
 namespace App\Database;
+
 use Exception;
 use mysqli;
 use mysqli_sql_exception;
 
 class Database
 {
+
     private string $host;
     private string $database;
     private static Database $instance;
+    private string $user;
+    private string $password;
     private mysqli $connection; //u can't use mixed is crazy, don't try again... this it is a formal definition
+
 
     /**
      * @throws Exception
      */
-    private function __construct()
-    {
-        $this->host = getenv("DB_HOST");
-        $this->database = getenv("DB_NAME");
-        if (!isset($this->connection)) {
-            try {
+    private function __construct(){
+        $this->host = getenv('DB_HOST');
+        $this->database = getenv('DB_NAME');
+
+        if(!isset($this->connection)){
+            try{
                 $this->ResetDefaultConnection();
-            } catch (mysqli_sql_exception) {
+                $this->setAsGlobal();
+            }catch(mysqli_sql_exception){
                 throw new Exception('Error de conexion a la base de datos');
             }
         }
     }
 
     /**
-     * @param int|null $Rol
      * @return void
      */
+    public function setAsGlobal(): void
+    {
+        static::$instance = $this;
+    }
+
+
+    /**
+     * @param null $user
+     * @param null $password
+     * @return void
+     */
+    public function changeConnectionRol($user = null, $password = null):void
+    {
+        $this->changeUserAndPass($user, $password);
+        /*
+         * Method to change the role of the Database "reestablishes
+         * the connection with the user of the one corresponding
+         * to his role"
+         * */
+        $this->ResetDefaultConnection();
+    }
+
+    /**
+     * @param $user
+     * @param $password
+     * @return void
+     */
+    private function changeUserAndPass($user, $password): void
+    {
+        $this->user = $user ?? $this->user;
+        $this->password = $password ?? $this->password;
+    }
+
     private function ResetDefaultConnection(int $Rol = null): void
     {
         $UserDB = getenv('DB_USER_DEFAULT');
@@ -56,20 +94,6 @@ class Database
     }
 
     /**
-     * @param int $Rol
-     * @return void
-     */
-    public function changeConnectionRol(int $Rol): void
-    {
-        /*
-         * Method to change the role of the database "reestablishes
-         * the connection with the user of the one corresponding
-         * to his role"
-         * */
-        $this->ResetDefaultConnection($Rol);
-    }
-
-    /**
      * @return mysqli
      */
     public function getConnection(): mysqli
@@ -91,6 +115,8 @@ class Database
         }
         return self::$instance;
     }
+
+
 
     /**
      * @return void
