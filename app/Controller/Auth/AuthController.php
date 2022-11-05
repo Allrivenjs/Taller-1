@@ -18,10 +18,10 @@ class AuthController
 
     public function SignOut(): void
     {
-        $request = Request::capture();
-        $UserData = $request->only('email', 'password', 'names', 'lastnames', 'address', 'phone', 'gender', 'dob');
-        $insert_user = "INSERT INTO user VALUES ($UserDatatext)";
-        print($insert_user);
+        #$request = Request::capture();
+        #$UserData = $request->only('email', 'password', 'names', 'lastnames', 'address', 'phone', 'gender', 'dob');
+        #$insert_user = "INSERT INTO user VALUES ($UserDatatext)";
+        #print($insert_user);
     }
 
     /**

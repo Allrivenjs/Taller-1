@@ -5,6 +5,12 @@ composer.lock
 /vendor/
 .idea/
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 *.xml
 >>>>>>> origin
+=======
+*.xml
+=======
+>>>>>>> c4ae6cfc27cef11bc299aa885e0c09034c9295a4
+>>>>>>> fa4f95080f40b688f358d730901c13394f57b64d
