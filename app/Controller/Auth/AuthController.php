@@ -21,14 +21,20 @@ class AuthController
         $request = Request::capture();
         $UserData = $request->only('id_user', 'names', 'lastnames', 'email', 'dob', 'phone', 'address', 'password');
         $UserDataText = sprintf("'%s'", implode("','",$UserData));
-        $insert_user = "INSERT INTO `user` (`id_user`, `names`, `lastnames`, `email`, `dob`, `phone`, `address`, `password`) VALUES ($UserDataText);";
+        $data_in_token = array(
+            "email" => $UserData["email"],
+            "rol" => 1,
+        );
+
+        $token = JWT::encode($this->GenerateToken($data_in_token), getenv('JWT_SECRET'), 'HS256');//Generate token
+        $insert_user = "INSERT INTO `user` (`id_user`, `names`, `lastnames`, `email`, `dob`, `phone`, `address`, `password`,`token`) VALUES ($UserDataText,'$token');";
         $ConDB = Database::getInstance()->getConnection(); //Conection to Database
         try {
             mysqli_query($ConDB, $insert_user);
             if($ConDB->affected_rows==1){
                 //Response OK
                 http_response_code(200);
-                print(json_encode(array('detail' => 'Usuario registrado correctamente')));
+                print(json_encode(array('detail' => 'Usuario registrado correctamente', 'token' => $token)));
             }
         }catch (\mysqli_sql_exception $e){
             //Exception control if the user is already registered or any other error.
