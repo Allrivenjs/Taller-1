@@ -12,8 +12,6 @@ class Database
     private string $host;
     private string $database;
     private static Database $instance;
-    private string $user;
-    private string $password;
     private mysqli $connection; //u can't use mixed is crazy, don't try again... this it is a formal definition
 
 
@@ -26,51 +24,19 @@ class Database
 
         if(!isset($this->connection)){
             try{
-                $this->ResetDefaultConnection();
-                $this->setAsGlobal();
+                $this->SetUserConnection();
             }catch(mysqli_sql_exception){
                 throw new Exception('Error de conexion a la base de datos');
             }
         }
     }
 
-    /**
-     * @return void
-     */
-    public function setAsGlobal(): void
-    {
-        static::$instance = $this;
-    }
-
 
     /**
-     * @param null $user
-     * @param null $password
-     * @return void
+     * @param int|null $Rol
+     * @return Void
      */
-    public function changeConnectionRol($user = null, $password = null):void
-    {
-        $this->changeUserAndPass($user, $password);
-        /*
-         * Method to change the role of the Database "reestablishes
-         * the connection with the user of the one corresponding
-         * to his role"
-         * */
-        $this->ResetDefaultConnection();
-    }
-
-    /**
-     * @param $user
-     * @param $password
-     * @return void
-     */
-    private function changeUserAndPass($user, $password): void
-    {
-        $this->user = $user ?? $this->user;
-        $this->password = $password ?? $this->password;
-    }
-
-    private function ResetDefaultConnection(int $Rol = null): void
+    public function SetUserConnection(int $Rol = null): void
     {
         $UserDB = getenv('DB_USER_DEFAULT');
         $Pass = getenv('DB_PASS_DEFAULT');
@@ -99,7 +65,7 @@ class Database
     public function getConnection(): mysqli
     {
         if (!isset($this->connection)) {
-            $this->ResetDefaultConnection();
+            $this->SetUserConnection();
         }
         return $this->connection;
     }
