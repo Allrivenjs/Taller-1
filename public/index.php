@@ -17,6 +17,7 @@ function routeOfUser(): string
     $baseDir = str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
     return 'http://' . $_SERVER['HTTP_HOST'] . $baseDir;
 }
+\Config\Cors\Cors::cors();
 
 define('BASE_URL', routeOfUser());
 
