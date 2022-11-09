@@ -1,6 +1,5 @@
 <?php
 
-
 use Phroute\Phroute\RouteCollector;
 use Controllers\Email\SendEmailController;
 
@@ -45,7 +44,9 @@ $router->post('/sendmail', function () {
 
 $router->group(['prefix' => 'api'], function (RouteCollector $router) {
 
-    $router->get('/login', 'App\Controllers\AuthController@login');
+    $router->post('/login', [AuthController::class, 'Login']);
+    $router->post('/signout', [AuthController::class, 'SignOut']);
+
 
     $router->group(['before' => 'auth'], function (RouteCollector $router) {
 
