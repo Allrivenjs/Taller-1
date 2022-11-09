@@ -26,11 +26,15 @@ $router->post('/sendmail', function () {
     try {
         $controller = new SendEmailController();
         $data = json_decode(file_get_contents("php://input"));
+
+        $message = file_get_contents("../mail_templates/sample_mail.html");
+        $table = file_get_contents("../mail_templates/table.html");
+
         if (!$data) {
             throw new Exception('no data');
             exit;
         }
-        $resp  = $controller->sendEmail($data->email, $data->userName, $data->valueSent, $data->accountType, $data->typeTransfer, $data->isReceiving, $data->isFaild);
+        $resp  = $controller->sendEmail($data->email, $data->userName, $data->valueSent, $data->accountType, $data->typeTransfer, $data->isReceiving, $data->isFaild, $message, $table);
         $response = array("code" => 200, "msg" => "Mail sent successfully", "mail" => $resp);
         return json_encode(["response" => $response]);
     } catch (Exception $ex) {

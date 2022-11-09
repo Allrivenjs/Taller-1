@@ -18,43 +18,40 @@ class SendEmailController
    * @param $isFaild
    * @return string
    */
-  public function sendEmail($userMail, $userName, $valueSent = "0", $accountType = "ahorro", $typeTransfer = "externa", $isReceiving = true, $isFaild = false)
+
+  public function sendEmail($userMail, $userName, $valueSent = "0", $accountType = "ahorro", $typeTransfer = "externa", $isReceiving = true, $isFaild = false, $message, $table)
   {
     try {
 
-      $message = file_get_contents("mail_templates/sample_mail.html");
-      $table = file_get_contents("mail_templates/table.html");
-
-      echo $message;
-
-      // Intancia de PHPMailer
+      $email = getenv('EMAIL_CREDENTIAL');
+      $password = getenv('PASSWORD_CREDENTIAL');
+      // PHPMailer instance
       $mail = new PHPMailer();
 
-      // Es necesario para poder usar un servidor SMTP como gmail
+      // It is required to be able to use an SMTP server such as gmail
       $mail->isSMTP();
 
       //Set the hostname of the mail server
       $mail->Host = 'smtp.gmail.com';
       $mail->Port = 465;
 
-      // Propiedad para establecer la seguridad de encripción de la comunicación
+      // Property to set encryption security for communication
       $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
 
-      // Para activar la autenticación smtp del servidor
+      // To enable server SMTP authentication
       $mail->SMTPAuth = true;
 
-      // Credenciales de la cuenta
-      $email = 'bancarapidanoreply@gmail.com';
+      // Account credentials
       $mail->Username = $email;
-      $mail->Password = 'twsmkayxanqoxnks';
+      $mail->Password = $password;
 
-      // Quien envía este mensaje
+      // Who sends this message
       $mail->setFrom($email, 'BANCA RAPIDA');
 
-      // Destinatario
+      // Addressee
       $mail->addAddress($userMail, 'Hola ', $userName);
 
-      // Asunto del correo
+      // Subject of the email
       $mail->Subject = 'BancaRapida le informa';
 
 
@@ -76,23 +73,22 @@ class SendEmailController
       $message = str_replace('%typeTransfer%', $typeTransfer, $message);
       $message = str_replace('%faildTable%', $faildTable, $message);
 
-      // Contenido
+      // Content
       $mail->IsHTML(true);
       $mail->CharSet = 'UTF-8';
       $mail->MsgHTML($message);
 
-      // Texto alternativo
+      // Alt text
       $mail->AltBody = 'BANCA RAPIDA LE INFORMA';
 
-      // Enviar el correo
+      // Send the mail
       if (!$mail->send()) {
         throw new Exception($mail->ErrorInfo);
       }
 
-      return 'Correo enviado';
+      return 'Mail sent';
     } catch (Exception $e) {
       throw new Exception($e);
     }
   }
 }
-?>
