@@ -8,6 +8,7 @@ use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Illuminate\Http\Request;
+use mysqli_sql_exception;
 
 class AuthController
 {
@@ -18,70 +19,67 @@ class AuthController
 
     }
 
+    /**
+     * @return void
+     * @throws Exception
+     */
     public function SignOut(): void
     {
         $request = Request::capture();
-        $UserData = $request->only('id_user', 'names', 'lastnames', 'email', 'dob', 'phone', 'address', 'password');
-        $UserDataText = sprintf("'%s'", implode("','",$UserData));
-        $data_in_token = array(
-            "email" => $UserData["email"],
-            "rol" => 1,
-        );
-
+        $UserData = sprintf("'%s'", implode("','",$request->only('identityNumber', 'identityType', 'name', 'lastname', 'address', 'phone', 'email', 'gender', 'dob', 'idUserCredentials')));
+        $data_in_token = array("user_name" => $request->only("user_name"));
         $token = JWT::encode($this->GenerateToken($data_in_token), getenv('JWT_SECRET'), 'HS256');//Generate token
-        $insert_user = "INSERT INTO `user` (`id_user`, `names`, `lastnames`, `email`, `dob`, `phone`, `address`, `password`,`token`) VALUES ($UserDataText,'$token');";
         $ConDB = Database::getInstance()->getConnection(); //Conection to Database
+        $username = mysqli_real_escape_string($ConDB,$request->post("user_name"));
+        $password = mysqli_real_escape_string($ConDB,sha1($request->post("password")));
         try {
-            mysqli_query($ConDB, $insert_user);
-            if($ConDB->affected_rows==1){
-                //Response OK
-                http_response_code(200);
-                print(json_encode(array('detail' => 'Usuario registrado correctamente', 'token' => $token)));
-            }
-        }catch (\mysqli_sql_exception $e){
-            //Exception control if the user is already registered or any other error.
-            http_response_code(403);
+            $ConDB->autocommit(false);
+            $insert_user_credentials = sprintf("INSERT INTO `usercredentials` (`user`, `password`) VALUES ('%s','%s');",$username, $password);
+            $ConDB->query($insert_user_credentials);
+            $insert_user = "INSERT INTO `user` (`identityNumber`, `identityType`, `name`, `lastname`, `address`, `phone`, `email`, `gender`, `dob`, `idUserCredentials`) VALUES ($UserData,'$ConDB->insert_id');";
+            $ConDB->query($insert_user);
+            $ConDB->commit();
+            //Response OK
+            http_response_code(200);
+            print(json_encode(array('detail' => 'Usuario registrado correctamente', 'token' => $token)));
+        } catch (mysqli_sql_exception $e){
+            $ConDB->rollback();
+            http_response_code(409);
             print(json_encode(array('detail' => 'El usuario ya existe o alguno de los campos es incorrecto.')));
+        } finally {
+            $ConDB->close();
         }
 
     }
 
     /**
      * @throws Exception
+     * @return void
      */
     public function Login(): void
     {
         $request = Request::capture();
-        $credentials = $request->only('email', 'password');//Get credentials
         $ConDB = Database::getInstance()->getConnection(); //Conection to Database
-        //Transform credentials
-        $temp_email = mysqli_real_escape_string($ConDB, $credentials['email']);
-        $temp_pass = mysqli_real_escape_string($ConDB, sha1($credentials['password']));
+        $username = mysqli_real_escape_string($ConDB,$request->post("user_name"));
+        $password = mysqli_real_escape_string($ConDB,sha1($request->post("password")));
         /*
          * querying user data
          * */
-        $query_user = "SELECT id_user,fk_rol,names,lastnames,phone,dob FROM user WHERE email = '$temp_email' AND password = '$temp_pass'";
+        $query_user = sprintf("SELECT uc.idRole, user.* FROM user INNER JOIN usercredentials uc on user.idUserCredentials=uc.id WHERE uc.user = '%s' AND uc.password = '%s';",$username, $password);
         $stmt_user = mysqli_query($ConDB, $query_user);
         $user_row = $stmt_user->fetch_assoc();
         if (mysqli_num_rows($stmt_user) == 1) {
 
             $data_in_token = array(
-                "email" => $temp_email,
-                "rol" => $user_row['fk_rol'],
+                "user_name" => $username,
+                "rol" => $user_row['idRole'],
             );
 
             $token = JWT::encode($this->GenerateToken($data_in_token), getenv('JWT_SECRET'), 'HS256');//Generate token
-            //this code insert the token in the user table and return the current rol of user
-            $user_id = $user_row["id_user"];
-            $query_update = "UPDATE user SET token = '$token' WHERE id_user = $user_id";
-            $query_result = mysqli_query($ConDB, $query_update);
-            if (mysqli_affected_rows($ConDB) == 1) {
-                http_response_code(200);
-                $output = array('token' => $token, 'user_data' => $user_row);
-                print(json_encode($output));
-                return;
-            }
-
+            http_response_code(200);
+            $output = array('token' => $token, 'user_data' => $user_row);
+            print(json_encode($output));
+            return;
         }
 
         //if it did not find the user, then it exits the upper conditional and prints the following message
@@ -96,7 +94,8 @@ class AuthController
     private function GenerateToken(array $data): array
     {
         $start_time = time();
-        $expiration_time = $start_time + (60 * 60 * 24 * 2);
+        //only 4 hours to use
+        $expiration_time = $start_time + (60 * 60 * 4);
         return array(
             "iat" => $start_time,
             "exp" => $expiration_time,
@@ -120,14 +119,8 @@ class AuthController
             $now = time();
             //check that it is not expired
             if ($now < $tokenDecode->exp) {
-                $ConDB = Database::getInstance()->getConnection(); //Conection to Database
-                $query_user = "SELECT fk_rol FROM user WHERE token = '$token'";
-                $stmt_user = mysqli_query($ConDB, $query_user);
-                $user_row = $stmt_user->fetch_assoc();
-                if($ConDB->affected_rows==1){
-                    Database::getInstance()->SetUserConnection($user_row['fk_rol']);
-                    return true;
-                }
+                Database::getInstance()->SetUserConnection($tokenDecode->data->rol);
+                return true;
             }
         }
 
