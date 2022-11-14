@@ -10,6 +10,7 @@ use Firebase\JWT\JWT;
 class AuthMiddlewareTrait
 {
     /**
+     * @return null|bool
      * @throws Exception
      */
     public static function handle(): null|bool
@@ -17,7 +18,7 @@ class AuthMiddlewareTrait
 
         try {
             $Authenticate = AuthController::ValidateToken();
-            if($Authenticate) return true;
+            if($Authenticate) return null;
         }
         catch (ExpiredException $e){
             http_response_code(401);
