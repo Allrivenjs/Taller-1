@@ -30,7 +30,7 @@ $router->group(['prefix' => 'api'], function (RouteCollector $router) {
         });
 
         $router->get('/todos/usuarios',[consolidadoController::class, 'getAllUser']);
-        $router->get('/todos/transferencias/externas',[consolidadoController::class, 'etAllExternalTransfer']);
+        $router->get('/todos/transferencias/externas',[consolidadoController::class, 'getAllExternalTransfer']);
         $router->get('/todos/transferencias/internas',[consolidadoController::class, 'getAllInternalTransfer']);
         
     });
