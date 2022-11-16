@@ -21,7 +21,7 @@ class consolidadoController{
             array_push($data, $row);
         }
 
-        return $data;
+        return "Hola";
     }
 
     public function getAllExternalTransfer(){
@@ -35,7 +35,7 @@ class consolidadoController{
             array_push($data, $row);
         }
 
-        return "Hola";
+        return $data;
     }
 
     public function getAllInternalTransfer(){
