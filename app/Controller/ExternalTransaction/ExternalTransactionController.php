@@ -72,7 +72,10 @@ class ExternalTransactionController
         $bankName = mysqli_real_escape_string($ConDB, $request->post("bank_name"));
         if ($res_amount > $amount) {
             try {
-                $query_success = "INSERT INTO `externaltransfer` (`idAccount`, `EANumber`, `transactionType`, `EAType`, `amount`, CURRENT_TIMESTAMP, `status`, `EAOwnerName`, `EAOwnerId`, `EAOwnerIdType`, `description`, `bankName`)  VALUES ('$idAccount','$EANumber','$transactionType','$EAType','$amount','$date','$status','$EAOwnerName','$EAOwnerId', '$EAOwnerIdType','$description','$bankName')";
+
+                $query_success = "INSERT into `externaltransfer` (`idAccount`, `EANumber`, `transactionType`, `EAType`, `amount`, `date`, `status`, `EAOwnerName`, `EAOwnerId`, `EAOwnerIdType`, `description`, `bankName`)  VALUES ('$idAccount','$EANumber','$transactionType','$EAType','$amount','$date','$status','$EAOwnerName','$EAOwnerId', '$EAOwnerIdType','$description','$bankName')";
+
+                // $query_success = "INSERT INTO `externaltransfer` (`idAccount`, `EANumber`, `transactionType`, `EAType`, `amount`, CURRENT_TIMESTAMP, `status`, `EAOwnerName`, `EAOwnerId`, `EAOwnerIdType`, `description`, `bankName`)  VALUES ('$idAccount','$EANumber','$transactionType','$EAType','$amount','$date','$status','$EAOwnerName','$EAOwnerId', '$EAOwnerIdType','$description','$bankName')";
                 $req = mysqli_query($ConDB, $query_success);
 
                 $new_amount = $res_amount - $amount;
@@ -89,7 +92,7 @@ class ExternalTransactionController
                 http_response_code(409);
                 print($e);
             } finally {
-                $ConDB->close();
+                // $ConDB->close();
             }
         } else {
             try {
