@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f5ac41dc-3dd0-4bbb-8b2b-eb77c43109fa" name="Changes" comment="up">
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Controller/Auth/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controller/Auth/AuthController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Email/EmailController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controller/Email/SendEmailController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,7 +127,7 @@
       <workItem from="1668543119461" duration="2789000" />
       <workItem from="1668547883137" duration="2806000" />
       <workItem from="1668629211985" duration="1153000" />
-      <workItem from="1668630410436" duration="1211000" />
+      <workItem from="1668630410436" duration="1701000" />
     </task>
     <task id="LOCAL-00001" summary="up">
       <created>1667665161119</created>
