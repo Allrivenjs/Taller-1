@@ -35,15 +35,16 @@ class ExternalTransactionController
         $bankName = mysqli_real_escape_string($ConDB, $request->post("bank_name"));
 
         if (strlen($verified) > 0) {
+
             $res_amount = ExternalTransactionController::VerifiedAmount($EANumber);
             $query_success = "INSERT into `externaltransfer` (`idAccount`, `EANumber`, `transactionType`, `EAType`, `amount`, `date`, `status`, `EAOwnerName`, `EAOwnerId`, `EAOwnerIdType`, `description`, `bankName`)  VALUES ('$idAccount','$EANumber','$transactionType','$EAType','$amount','$date','$status','$EAOwnerName','$EAOwnerId', '$EAOwnerIdType','$description','$bankName')";
             $req = mysqli_query($ConDB, $query_success);
 
-            $new_amount = $res_amount + $amount;
-            ExternalTransactionController::UpdateAmount($idAccount, $new_amount);
-            http_response_code(200);
-            print(json_encode(array('message' => 'Transacción realizada con éxito')));
-            $ConDB->close();
+             $new_amount = $res_amount + $amount;
+             ExternalTransactionController::UpdateAmount($idAccount, $new_amount);
+             // print(json_encode(array('message' => 'Transacción realizada con éxito')));
+            //  $ConDB->close();
+             http_response_code(200);
             
         } else {
 
@@ -79,8 +80,8 @@ class ExternalTransactionController
 
                 //Respuesta
                 http_response_code(200);
-                print(json_encode(array('message' => 'Transacción realizada con éxito')));
-                $ConDB->close();
+                // print(json_encode(array('message' => 'Transacción realizada con éxito')));
+                // $ConDB->close();
 
             } catch (mysqli_sql_exception $e) {
                 //throw $th;$ConDB->rollback();
