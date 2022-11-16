@@ -2,7 +2,7 @@
 
 use App\Controller\Auth\AuthController;
 use App\Controller\Email\SendEmailController;
-use App\Controller\Auth\conslidadoController;
+use App\Controller\Consolidado\consolidadoController;
 use Phroute\Phroute\RouteCollector;
 
 
@@ -29,9 +29,9 @@ $router->group(['prefix' => 'api'], function (RouteCollector $router) {
             echo 'posts';
         });
 
-        $router->get('/todos/usuarios',[conslidadoController::class, 'getAllUser']);
-        $router->get('/todos/transferencias/externas',[conslidadoController::class, 'etAllExternalTransfer']);
-        $router->get('/todos/transferencias/internas',[conslidadoController::class, 'getAllInternalTransfer']);
+        $router->get('/todos/usuarios',[consolidadoController::class, 'getAllUser']);
+        $router->get('/todos/transferencias/externas',[consolidadoController::class, 'etAllExternalTransfer']);
+        $router->get('/todos/transferencias/internas',[consolidadoController::class, 'getAllInternalTransfer']);
         
     });
 });

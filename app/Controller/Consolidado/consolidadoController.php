@@ -1,9 +1,9 @@
 <?php 
-namespace App\Controller\Auth;
+namespace App\Controller\Consolidado;
 
 use App\Database\Database;
 
-class conslidadoController{
+class consolidadoController{
 
     public function __construct()
     {
@@ -27,7 +27,7 @@ class conslidadoController{
     public function getAllExternalTransfer(){
         $ConDB = Database::getInstance()->getConnection();
 
-        $query = "select * from externalTransfer";
+        $query = "select * from externaltransfer";
         $stmt_user = mysqli_query($ConDB, $query);
         $user_row = $stmt_user->fetch_assoc();
         $data = array();
@@ -35,13 +35,13 @@ class conslidadoController{
             array_push($data, $row);
         }
 
-        return $data;
+        return "Hola";
     }
 
     public function getAllInternalTransfer(){
         $ConDB = Database::getInstance()->getConnection();
 
-        $query = "select * from internalTransfer";
+        $query = "select * from internaltransfer";
         $stmt_user = mysqli_query($ConDB, $query);
         $user_row = $stmt_user->fetch_assoc();
         $data = array();
