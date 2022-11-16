@@ -34,7 +34,6 @@ class ExternalTransactionController
         $description = mysqli_real_escape_string($ConDB, $request->post("description"));
         $bankName = mysqli_real_escape_string($ConDB, $request->post("bank_name"));
 
-
         if (strlen($verified) > 0) {
             $res_amount = ExternalTransactionController::VerifiedAmount($EANumber);
             $query_success = "INSERT into `externaltransfer` (`idAccount`, `EANumber`, `transactionType`, `EAType`, `amount`, `date`, `status`, `EAOwnerName`, `EAOwnerId`, `EAOwnerIdType`, `description`, `bankName`)  VALUES ('$idAccount','$EANumber','$transactionType','$EAType','$amount','$date','$status','$EAOwnerName','$EAOwnerId', '$EAOwnerIdType','$description','$bankName')";
@@ -45,6 +44,7 @@ class ExternalTransactionController
             http_response_code(200);
             print(json_encode(array('message' => 'Transacción realizada con éxito')));
             $ConDB->close();
+            
         } else {
 
             http_response_code(404);
@@ -124,7 +124,6 @@ class ExternalTransactionController
         if ($query_row) {
             $response = $query_row['id'];
         }
-
         return $response;
     }
 
@@ -135,6 +134,7 @@ class ExternalTransactionController
         $req = mysqli_query($ConDB, $query);
         $ConDB->close();
     }
+    
     public function VerifiedAmount($id)
     {
         $response = 0;
@@ -153,55 +153,53 @@ class ExternalTransactionController
     }
 
     public function getAllET(){
-        $request = Request::capture();
-        $ConDB = Database::getInstance()->getConnection();
-        $query  = "SELECT * FROM account";
-        $req = mysqli_query($ConDB, $query);
-        $query_row = mysqli_fetch_array($req);
-
-        $myarry = [];
-        if ($query_row) {
-
-            try {
-                while($query_row)
-                {
-                  $info =  array('id' => $query_row['id'],'idAccount'=> $query_row['idAccount'],'EANumber'=> $query_row['EANumber'], 'transactioType' => $query_row['transactionType'], 'EAType'=> $query_row['EAType'], 'amount' => $query_row['amount'], 'date'=> $query_row['date'], 'status'=> $query_row['status'], 'EAOwnerName'=>$query_row['EAOwnerName'],'EAOwnerId' => $query_row['EAOwnerId'], 'EAOwnerTypeId'=>$query_row['EAOwnerIdType'],'description'=> $query_row['description'], 'bankName'=>$query_row['bankName']);
-
-                  print($query_row['EANumber']);
-                  //  array_push($myarry,$info);
-
+        try {
+            $request = Request::capture();
+            $ConDB = Database::getInstance()->getConnection();
+            $query  = "SELECT * FROM account";
+            $req = mysqli_query($ConDB, $query);
+            $query_row = mysqli_fetch_array($req);
+            $myarry = [];
+            if ($query_row) {
+                $req1 = mysqli_query($ConDB, $query);
+                $data=array();
+                if(mysqli_num_rows($req1)>0){
+                    while ($row = mysqli_fetch_array($req1)){
+                        $info =  array('id' => $row['id'],'accountNumber'=> $row['accountNumber'],'type'=> $row['type'],'amount'=> $row['amount'],'idUser'=> $row['idUser'] );
+                        array_push($data, $info);                                 
+                    }                  
                 }
-
-                print(json_encode(array('message' => 'Datos encontrados', 'data'=> $query_row)));
-            } catch (\Throwable $th) {
-                //throw $th;
+                print(json_encode(array('message' => 'Datos encontrados', 'data'=> $data)));
+            }else{
+                http_response_code(400);
             }
-            
-            //print($query_row);
+        } catch (\Throwable $th) {
+            http_response_code(400);
         }
     }
 
     public function getIdET(){
-        $request = Request::capture();
-        $ConDB = Database::getInstance()->getConnection();
-        $idAccount = mysqli_real_escape_string($ConDB, $request->post("id_account"));
-
-        $query  = "SELECT * FROM externaltransfer where id = '$idAccount'";
-        $req = mysqli_query($ConDB, $query);
-        $query_row = mysqli_fetch_array($req);
-
-        if ($query_row) {
-            try {
-                  $info =  array('id' => $query_row['id'],'idAccount'=> $query_row['idAccount'],'EANumber'=> $query_row['EANumber'], 'transactioType' => $query_row['transactionType'], 'EAType'=> $query_row['EAType'], 'amount' => $query_row['amount'], 'date'=> $query_row['date'], 'status'=> $query_row['status'], 'EAOwnerName'=>$query_row['EAOwnerName'],'EAOwnerId' => $query_row['EAOwnerId'], 'EAOwnerTypeId'=>$query_row['EAOwnerIdType'],'description'=> $query_row['description'], 'bankName'=>$query_row['bankName']);
-                print(json_encode(array('message' => 'Datos encontrados', 'data'=> $info)));
-            } catch (\Throwable $th) {
-                //throw $th;
-                $ConDB->rollback();
-                http_response_code(409);
-            } finally{
-                $ConDB->close();
-
-            }
+        try {
+            $request = Request::capture();
+            $ConDB = Database::getInstance()->getConnection();
+            $idAccount = mysqli_real_escape_string($ConDB, $request->post("id_account"));
+            $query  = "SELECT * FROM externaltransfer where id = '$idAccount'";
+            $req = mysqli_query($ConDB, $query);
+            $query_row = mysqli_fetch_array($req);
+            if ($query_row) {
+                try {
+                      $info =  array('id' => $query_row['id'],'idAccount'=> $query_row['idAccount'],'EANumber'=> $query_row['EANumber'], 'transactioType' => $query_row['transactionType'], 'EAType'=> $query_row['EAType'], 'amount' => $query_row['amount'], 'date'=> $query_row['date'], 'status'=> $query_row['status'], 'EAOwnerName'=>$query_row['EAOwnerName'],'EAOwnerId' => $query_row['EAOwnerId'], 'EAOwnerTypeId'=>$query_row['EAOwnerIdType'],'description'=> $query_row['description'], 'bankName'=>$query_row['bankName']);
+                    print(json_encode(array('message' => 'Datos encontrados', 'data'=> $info)));
+                } catch (\Throwable $th) {
+                    //throw $th;
+                    $ConDB->rollback();
+                    http_response_code(409);
+                } finally{
+                    $ConDB->close();
+                }
+            } 
+        } catch (\Throwable $th) {
+            http_response_code(404);
         }
     }
 }

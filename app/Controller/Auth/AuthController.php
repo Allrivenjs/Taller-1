@@ -65,7 +65,9 @@ class AuthController
         /*
          * querying user data
          * */
+        
         $query_user = sprintf("SELECT uc.idRole, user.* FROM user INNER JOIN usercredentials uc on user.idUserCredentials=uc.id WHERE uc.user = '%s' AND uc.password = '%s';",$username, $password);
+        echo"$query_user";
         $stmt_user = mysqli_query($ConDB, $query_user);
         $user_row = $stmt_user->fetch_assoc();
         if (mysqli_num_rows($stmt_user) == 1) {
@@ -76,7 +78,7 @@ class AuthController
             );
 
             $token = JWT::encode($this->GenerateToken($data_in_token), getenv('JWT_SECRET'), 'HS256');//Generate token
-            http_response_code(200);
+            http_response_code(300);
             $output = array('token' => $token, 'user_data' => $user_row);
             print(json_encode($output));
             return;
