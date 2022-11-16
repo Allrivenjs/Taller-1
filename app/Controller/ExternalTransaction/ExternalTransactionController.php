@@ -71,7 +71,7 @@ class ExternalTransactionController
         $bankName = mysqli_real_escape_string($ConDB, $request->post("bank_name"));
         if ($res_amount > $amount) {
             try {
-                $query_success = "INSERT INTO `externaltransfer` (`idAccount`, `EANumber`, `transactionType`, `EAType`, `amount`, `date`, `status`, `EAOwnerName`, `EAOwnerId`, `EAOwnerIdType`, `description`, `bankName`)  VALUES ('$idAccount','$EANumber','$transactionType','$EAType','$amount','$date','$status','$EAOwnerName','$EAOwnerId', '$EAOwnerIdType','$description','$bankName')";
+                $query_success = "INSERT INTO `externaltransfer` (`idAccount`, `EANumber`, `transactionType`, `EAType`, `amount`, CURRENT_TIMESTAMP, `status`, `EAOwnerName`, `EAOwnerId`, `EAOwnerIdType`, `description`, `bankName`)  VALUES ('$idAccount','$EANumber','$transactionType','$EAType','$amount','$date','$status','$EAOwnerName','$EAOwnerId', '$EAOwnerIdType','$description','$bankName')";
                 $req = mysqli_query($ConDB, $query_success);
 
                 $new_amount = $res_amount - $amount;
@@ -156,6 +156,32 @@ class ExternalTransactionController
         try {
             $request = Request::capture();
             $ConDB = Database::getInstance()->getConnection();
+            $query  = "SELECT * FROM externaltransfer";
+            $req = mysqli_query($ConDB, $query);
+            $query_row = mysqli_fetch_array($req);
+            $myarry = [];
+            if ($query_row) {
+                $req1 = mysqli_query($ConDB, $query);
+                $data=array();
+                if(mysqli_num_rows($req1)>0){
+                    while ($row = mysqli_fetch_array($req1)){
+                        $info =  array('id' => $row['id'],'transactioType' => $row['transactionType'], 'amount' => $row['amount'], 'date'=> $row['date'], 'status'=> $row['status'], 'bankName'=>$row['bankName']);
+                        array_push($data, $info);                                 
+                    }                  
+                }
+                print(json_encode($data));
+                /* print(json_encode(array('message' => 'Datos encontrados', 'data'=> $data))); */
+            }else{
+                http_response_code(404);
+            }
+        } catch (\Throwable $th) {
+            http_response_code(400);
+        }
+    }
+    /* public function getAllET(){
+        try {
+            $request = Request::capture();
+            $ConDB = Database::getInstance()->getConnection();
             $query  = "SELECT * FROM account";
             $req = mysqli_query($ConDB, $query);
             $query_row = mysqli_fetch_array($req);
@@ -169,14 +195,15 @@ class ExternalTransactionController
                         array_push($data, $info);                                 
                     }                  
                 }
-                print(json_encode(array('message' => 'Datos encontrados', 'data'=> $data)));
+                print(json_encode($data));
+                
             }else{
-                http_response_code(400);
+                http_response_code(404);
             }
         } catch (\Throwable $th) {
             http_response_code(400);
         }
-    }
+    } */
 
     public function getIdET(){
         try {
