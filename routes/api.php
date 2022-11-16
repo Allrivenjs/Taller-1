@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Controller\Auth\AuthController;
 use Phroute\Phroute\RouteCollector;
 $router = Config\Providers\RouteServiceProviders::getInstance()->getRouter();
@@ -24,6 +25,8 @@ $router->group(['prefix'=> 'api'], function (RouteCollector $router){
 
 
 });
+
+
 
 
 
