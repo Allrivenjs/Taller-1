@@ -27,7 +27,7 @@ class AuthController
     {
         $request = Request::capture();
         $UserData = sprintf("'%s'", implode("','",$request->only('identityNumber', 'identityType', 'name', 'lastname', 'address', 'phone', 'email', 'gender', 'dob', 'idUserCredentials')));
-        $data_in_token = array("user_name" => $request->only("user_name"));
+        $data_in_token = $request->post("user_name");
         $token = JWT::encode($this->GenerateToken($data_in_token), getenv('JWT_SECRET'), 'HS256');//Generate token
         $ConDB = Database::getInstance()->getConnection(); //Conection to Database
         $username = mysqli_real_escape_string($ConDB,$request->post("user_name"));
