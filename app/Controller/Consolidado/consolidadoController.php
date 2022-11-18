@@ -13,15 +13,16 @@ class consolidadoController{
     public function getAllUser(){
         $ConDB = Database::getInstance()->getConnection();
 
-        $query = "select * from user";
+        $query = "select * from usercredentials";
         $stmt_user = mysqli_query($ConDB, $query);
-        $user_row = $stmt_user->fetch_assoc();
         $data = array();
-        while($row = $user_row){
-            array_push($data, $row);
+        $cont = 0;
+        while($user_row = $stmt_user->fetch_assoc()){
+            $data[$cont] = $user_row;
+            $cont += 1;
         }
 
-        return "Hola";
+        return json_encode($data);
     }
 
     public function getAllExternalTransfer(){
@@ -29,13 +30,14 @@ class consolidadoController{
 
         $query = "select * from externaltransfer";
         $stmt_user = mysqli_query($ConDB, $query);
-        $user_row = $stmt_user->fetch_assoc();
         $data = array();
-        while($row = $user_row){
-            array_push($data, $row);
+        $cont = 0;
+        while($user_row = $stmt_user->fetch_assoc()){
+            $data[$cont] = $user_row;
+            $cont += 1;
         }
 
-        return $data;
+        return json_encode($data);
     }
 
     public function getAllInternalTransfer(){
@@ -43,13 +45,13 @@ class consolidadoController{
 
         $query = "select * from internaltransfer";
         $stmt_user = mysqli_query($ConDB, $query);
-        $user_row = $stmt_user->fetch_assoc();
         $data = array();
-        while($row = $user_row){
-            array_push($data, $row);
+        $cont = 0;
+        while($user_row = $stmt_user->fetch_assoc()){
+            $data[$cont] = $user_row;
         }
 
-        return $data;
+        return json_encode($data);
     }
 }
 ?>
