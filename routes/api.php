@@ -19,8 +19,8 @@ $router->group(['prefix' => 'api'], function (RouteCollector $router) {
 
     $router->post('/login', [AuthController::class, 'Login']);
     $router->post('/signout', [AuthController::class, 'SignOut']);
-    
-    $router->group(['before' => 'auth'], function(RouteCollector $router){
+
+    $router->group(['before' => 'auth'], function (RouteCollector $router) {
 
 
         $router->get('/posts', function () {
@@ -29,9 +29,10 @@ $router->group(['prefix' => 'api'], function (RouteCollector $router) {
 
 
         /** Rutas del consolidado diario de operaciones - GRUPO CAMILO PATERNINA */
-        $router->get('/todos/usuarios',[consolidadoController::class, 'getAllUser']);
-        $router->get('/todos/transferencias/externas',[consolidadoController::class, 'getAllExternalTransfer']);
-        $router->get('/todos/transferencias/internas',[consolidadoController::class, 'getAllInternalTransfer']);
-        
+        $router->get('/todos/transferencias/externas', [consolidadoController::class, 'getAllExternalTransfer']);
+        $router->get('/todos/transferencias/internas', [consolidadoController::class, 'getAllInternalTransfer']);
+        $router->get('/todos/usuarios', [consolidadoController::class, 'getAllUser']);
+        $router->get('/todos/pagos', [consolidadoController::class, 'getAllPayment']);
+
     });
 });

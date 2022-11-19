@@ -13,7 +13,7 @@ class consolidadoController{
     public function getAllUser(){
         $ConDB = Database::getInstance()->getConnection();
 
-        $query = "select * from usercredentials";
+        $query = "select * from user";
         $stmt_user = mysqli_query($ConDB, $query);
         $data = array();
         $cont = 0;
@@ -53,5 +53,22 @@ class consolidadoController{
 
         return json_encode($data);
     }
+
+    public function getAllPayment(){
+        $ConDB = Database::getInstance()->getConnection();
+
+        $query = "select * from payment";
+        $stmt_user = mysqli_query($ConDB, $query);
+        $data = array();
+        $cont = 0;
+        while($user_row = $stmt_user->fetch_assoc()){
+            $data[$cont] = $user_row;
+        
+            $cont += 1;
+        }
+
+        return json_encode($data);
+    }
+
 }
 ?>
