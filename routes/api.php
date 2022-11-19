@@ -15,13 +15,10 @@ $router->group(['prefix'=> 'api'], function (RouteCollector $router){
     $router->post('/login', [AuthController::class, 'Login']);
     $router->post('/signout', [AuthController::class, 'SignOut']);
 
-    $router->get('/externalTransById', [ExternalTransactionController::class, 'getIdET']);
+    $router->post('/externalTransById', [ExternalTransactionController::class, 'getIdET']);
     $router->get('/externalTransAll', [ExternalTransactionController::class, 'getAllET']);
     $router->post('/externalTransCreateExternal', [ExternalTransactionController::class, 'CreateETE']);
     $router->post('/externalTransCreateInternal', [ExternalTransactionController::class, 'CreateETI']);
-
-
-
 
     $router->group(['before' => 'auth'], function(RouteCollector $router){
 
