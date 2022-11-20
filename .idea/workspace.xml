@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f5ac41dc-3dd0-4bbb-8b2b-eb77c43109fa" name="Changes" comment="up">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Controller/Auth/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controller/Auth/AuthController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +72,7 @@
       <path value="$PROJECT_DIR$/vendor/symfony/finder" />
       <path value="$PROJECT_DIR$/vendor/symfony/error-handler" />
       <path value="$PROJECT_DIR$/vendor/firebase/php-jwt" />
+      <path value="$PROJECT_DIR$/vendor/phpmailer/phpmailer" />
     </include_path>
   </component>
   <component name="ProjectId" id="2G2QGDLornKQ6sdMzcNv6xlcGpH" />
@@ -89,11 +88,13 @@
     &quot;last_opened_file_path&quot;: &quot;/home/allrivenjs/Programing/Taller-1&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\bancarapida\app\Controller" />
       <recent name="C:\Users\jaime\Documents\Develop\bancarapida\app" />
     </key>
   </component>
@@ -115,6 +116,18 @@
       <workItem from="1667918655986" duration="7940000" />
       <workItem from="1667951506437" duration="24000" />
       <workItem from="1667956796288" duration="3079000" />
+      <workItem from="1667961672784" duration="324000" />
+      <workItem from="1668025556033" duration="257000" />
+      <workItem from="1668026406279" duration="178000" />
+      <workItem from="1668294397166" duration="611000" />
+      <workItem from="1668295036071" duration="6961000" />
+      <workItem from="1668303365750" duration="15000" />
+      <workItem from="1668303411087" duration="225000" />
+      <workItem from="1668377943633" duration="730000" />
+      <workItem from="1668543119461" duration="2789000" />
+      <workItem from="1668547883137" duration="2806000" />
+      <workItem from="1668629211985" duration="1153000" />
+      <workItem from="1668630410436" duration="1935000" />
     </task>
     <task id="LOCAL-00001" summary="up">
       <created>1667665161119</created>
