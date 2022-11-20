@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Database\Database;
 use mysqli;
 use mysqli_sql_exception;
+use App\Controller\Email\SendEmailController;
 
 class ExternalTransactionController
 {
@@ -19,9 +20,13 @@ class ExternalTransactionController
         $request = Request::capture();
         $ConDB = Database::getInstance()->getConnection();
         $EANumber = mysqli_real_escape_string($ConDB, $request->post("ea_number"));
-        $verified = ExternalTransactionController::VerifiedAccount($EANumber);
+        $response = ExternalTransactionController::VerifiedAccount($EANumber);
         //Variables que almacenaran los datos para la consulta
-        $idAccount = $verified;
+        $idAccount = $response['id'];
+        $email = $response['email'];
+        $name = $response['name'];
+
+
         $transactionType = mysqli_real_escape_string($ConDB, $request->post("transaction_type"));
         $EAType = mysqli_real_escape_string($ConDB, $request->post("ea_type"));
         $amount = intval(mysqli_real_escape_string($ConDB, $request->post("amount")));
@@ -32,8 +37,13 @@ class ExternalTransactionController
         $EAOwnerIdType = mysqli_real_escape_string($ConDB, $request->post("eao_idtype"));
         $description = mysqli_real_escape_string($ConDB, $request->post("description"));
         $bankName = mysqli_real_escape_string($ConDB, $request->post("bank_name"));
+        $message = file_get_contents("../mail_templates/sample_mail.html");
+        $table = file_get_contents("../mail_templates/table.html");
 
-        if (strlen($verified) > 0) {
+        $send= new SendEmailController(); 
+
+
+        if ($idAccount != '') {
             $res_amount = ExternalTransactionController::VerifiedAmount($EANumber);
             $query_success = "INSERT into `externaltransfer` (`idAccount`, `EANumber`, `transactionType`, `EAType`, `amount`, `date`, `status`, `EAOwnerName`, `EAOwnerId`, `EAOwnerIdType`, `description`, `bankName`)  VALUES ('$idAccount','$EANumber','$transactionType','$EAType','$amount','$date','$status','$EAOwnerName','$EAOwnerId', '$EAOwnerIdType','$description','$bankName')";
             $req = mysqli_query($ConDB, $query_success);
@@ -41,7 +51,18 @@ class ExternalTransactionController
              ExternalTransactionController::UpdateAmount($idAccount, $new_amount);
              // print(json_encode(array('message' => 'Transacción realizada con éxito')));
             //  $ConDB->close();
-            echo "ee";
+
+            try {
+                //code...   
+                
+                $tttt=   $send->sendEmail($email, $name , $amount, $accountType = "ahorro", $typeTransfer = "external", $isReceiving = true, $isFaild = false, $message, $table );
+
+            } catch (\Throwable $th) {
+
+                echo $th;
+                //throw $th;
+            }
+
              http_response_code(200);
         } else {
             http_response_code(404);
@@ -54,7 +75,11 @@ class ExternalTransactionController
         $request = Request::capture();
         $ConDB = Database::getInstance()->getConnection();
         $EANumber = mysqli_real_escape_string($ConDB, $request->post("ea_number"));  
-        $idAccount = ExternalTransactionController::VerifiedAccount($EANumber);
+        $response = ExternalTransactionController::VerifiedAccount($EANumber);
+        $idAccount = $response['id'];
+        $email = $response['email'];
+        $name = $response['name'];
+      
         $res_amount = ExternalTransactionController::VerifiedAmount($EANumber);
         $transactionType = mysqli_real_escape_string($ConDB, $request->post("transaction_type"));
         $EAType = mysqli_real_escape_string($ConDB, $request->post("ea_type"));
@@ -67,6 +92,13 @@ class ExternalTransactionController
         $description = mysqli_real_escape_string($ConDB, $request->post("description"));
         $bankName = mysqli_real_escape_string($ConDB, $request->post("bank_name"));
 
+        $message = file_get_contents("../mail_templates/sample_mail.html");
+        $table = file_get_contents("../mail_templates/table.html");
+        
+
+        $send= new SendEmailController(); 
+
+
         if($idAccount != ''){
             if ($res_amount > $amount) {
                 try {
@@ -75,6 +107,15 @@ class ExternalTransactionController
                     $req = mysqli_query($ConDB, $query_success);
                     $new_amount = $res_amount - $amount;
                     ExternalTransactionController::UpdateAmount($idAccount, $new_amount);
+                    try {
+                        //code...               
+                     $ttt=   $send->sendEmail($email, $name , $amount, $accountType = "ahorro", $typeTransfer = "interna", $isReceiving = true, $isFaild = false, $message, $table );
+                    } catch (\Throwable $th) {
+                        echo $th;
+                        //throw $th;
+                    }
+
+
                     //Respuesta
                     http_response_code(200);
                     // print(json_encode(array('message' => 'Transacción realizada con éxito')));
@@ -82,6 +123,7 @@ class ExternalTransactionController
                 } catch (mysqli_sql_exception $e) {
                     //throw $th;$ConDB->rollback();
                     $ConDB->rollback();
+                    $ttt=  $send->sendEmail($email, $name , $amount, $accountType = "ahorro", $typeTransfer = "interna", $isReceiving = true, $isFaild = true, $message, $table );
                     http_response_code(409);
                     print($e);
                 } finally {
@@ -93,9 +135,12 @@ class ExternalTransactionController
                     $query_unsuccess = "INSERT INTO `externaltransfer` (`idAccount`, `EANumber`, `transactionType`, `EAType`, `amount`, `date`, `status`, `EAOwnerName`, `EAOwnerId`, `EAOwnerIdType`, `description`, `bankName`)  VALUES ('$idAccount','$EANumber','$transactionType','$EAType','$amount','$date','$status','$EAOwnerName','$EAOwnerId', '$EAOwnerIdType','$description','$bankName')";
                     $req = mysqli_query($ConDB, $query_unsuccess);
                     // $ConDB->close();
+                    $ttt=  $send->sendEmail($email, $name , $amount, $accountType = "ahorro", $typeTransfer = "interna", $isReceiving = true, $isFaild = true, $message, $table );
                     http_response_code(200);
                     print(json_encode(array('message' => 'La transaccion no se pudo realizar, no cuenta con fondos suficientes')));
                 } catch (mysqli_sql_exception $e) {
+                    $ttt=  $send->sendEmail($email, $name , $amount, $accountType = "ahorro", $typeTransfer = "interna", $isReceiving = true, $isFaild = true, $message, $table );
+
                     $ConDB->rollback();
                     http_response_code(404);
                 } finally {
@@ -112,17 +157,14 @@ class ExternalTransactionController
 
     public function VerifiedAccount($id)
     {
-        $response = '';
         $request = Request::capture();
         $ConDB = Database::getInstance()->getConnection();
         $idAccount = mysqli_real_escape_string($ConDB, $request->post("id_account"));
-        $query  = "SELECT * FROM account where accountNumber = '$id'";
+        // $query  = "SELECT * FROM account where accountNumber = '$id'";
+        $query  = "SELECT * FROM `account`  INNER JOIN `user` on account.idUser= user.id  WHERE `accountNumber`='$id'";
         $req = mysqli_query($ConDB, $query);
         $query_row = mysqli_fetch_array($req);
-        if ($query_row != '') {
-            $response = $query_row['id'];
-        }
-        return $response;
+        return $query_row;
     }
 
     public function UpdateAmount($id, $amount)
