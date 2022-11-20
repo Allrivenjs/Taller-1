@@ -41,6 +41,7 @@ class ExternalTransactionController
              ExternalTransactionController::UpdateAmount($idAccount, $new_amount);
              // print(json_encode(array('message' => 'Transacción realizada con éxito')));
             //  $ConDB->close();
+            echo "ee";
              http_response_code(200);
         } else {
             http_response_code(404);
