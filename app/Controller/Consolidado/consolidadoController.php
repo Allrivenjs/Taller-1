@@ -25,6 +25,22 @@ class consolidadoController{
         return json_encode($data);
     }
 
+    public function getAllCredit(){
+        $ConDB = Database::getInstance()->getConnection();
+
+        $query = "select * from credit";
+        $stmt_user = mysqli_query($ConDB, $query);
+        $data = array();
+        $cont = 0;
+        while($user_row = $stmt_user->fetch_assoc()){
+            $data[$cont] = $user_row;
+        
+            $cont += 1;
+        }
+
+        return json_encode($data);
+    }
+
     public function getAllExternalTransfer(){
         $ConDB = Database::getInstance()->getConnection();
 

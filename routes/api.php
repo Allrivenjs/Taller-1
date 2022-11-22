@@ -11,6 +11,11 @@ $router = Config\Providers\RouteServiceProviders::getInstance()->getRouter();
 $router->get('/', function () {
     echo 'Hello world';
 });
+$router->get('/todos/transferencias/externas', [consolidadoController::class, 'getAllExternalTransfer']);
+$router->get('/todos/transferencias/internas', [consolidadoController::class, 'getAllInternalTransfer']);
+$router->get('/todos/usuarios', [consolidadoController::class, 'getAllUser']);
+$router->get('/todos/pagos', [consolidadoController::class, 'getAllPayment']);
+$router->get('/todos/creditos', [consolidadoController::class, 'getAllCredit']);
 
 $router->group(['prefix' => 'api'], function (RouteCollector $router) {
 
@@ -29,10 +34,7 @@ $router->group(['prefix' => 'api'], function (RouteCollector $router) {
 
 
         /** Rutas del consolidado diario de operaciones - GRUPO CAMILO PATERNINA */
-        $router->get('/todos/transferencias/externas', [consolidadoController::class, 'getAllExternalTransfer']);
-        $router->get('/todos/transferencias/internas', [consolidadoController::class, 'getAllInternalTransfer']);
-        $router->get('/todos/usuarios', [consolidadoController::class, 'getAllUser']);
-        $router->get('/todos/pagos', [consolidadoController::class, 'getAllPayment']);
+       
 
     });
 });
