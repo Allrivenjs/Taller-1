@@ -46,9 +46,7 @@ $router->post('/create/credit', [CreditController::class, 'InsertCredit']);
 
     $router->group(['before' => 'auth'], function(RouteCollector $router){
         
-        
-
-    $router->group(['before' => 'auth'], function (RouteCollector $router) {
+  
 
 
 
