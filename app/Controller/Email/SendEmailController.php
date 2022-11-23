@@ -21,39 +21,39 @@ class SendEmailController
    */
 
 
-  public function TestEmail(){
+  public function TestEmail()
+  {
 
-          // {
-          //     "email":"correo@gmail.com",
-          //     "userName":"Hola mundo",
-          //     "valueSent": "20000",
-          //     "accountType":"ahorro",
-          //     "typeTransfer":"externa",
-          //     "isReceiving":false,
-          //     "isFaild":false
-          //   }
+    // {
+    //     "email":"correo@gmail.com",
+    //     "userName":"Hola mundo",
+    //     "valueSent": "20000",
+    //     "accountType":"ahorro",
+    //     "typeTransfer":"externa",
+    //     "isReceiving":false,
+    //     "isFaild":false
+    //   }
 
-          try {
-              $controller = new SendEmailController();
-              $data = json_decode(file_get_contents("php://input"));
+    try {
+      $controller = new SendEmailController();
+      $data = json_decode(file_get_contents("php://input"));
 
-              $message = file_get_contents("../mail_templates/sample_mail.html");
-              $table = file_get_contents("../mail_templates/table.html");
+      $message = file_get_contents("../mail_templates/sample_mail.html");
+      $table = file_get_contents("../mail_templates/table.html");
 
-              if (!$data) {
-                  throw new Exception('no data');
-              }
-              $resp  = $controller->sendEmail($data->email, $data->userName, $data->valueSent, $data->accountType, $data->typeTransfer, $data->isReceiving, $data->isFaild, $message, $table);
-              $response = array("code" => 200, "msg" => "Mail sent successfully", "mail" => $resp);
-              return json_encode(["response" => $response]);
-          } catch (Exception $ex) {
-              $response = array("code" => 400, "msg" => "opps!! Unsent mail", "error" => $ex);
-              return json_encode(["response" => $response]);
-          }
-
+      if (!$data) {
+        throw new Exception('no data');
+      }
+      $resp  = $controller->sendEmail($data->email, $data->userName, $data->valueSent, $data->accountType, $data->typeTransfer, $data->isReceiving, $data->isFaild, "error", $message, $table);
+      $response = array("code" => 200, "msg" => "Mail sent successfully", "mail" => $resp);
+      return json_encode(["response" => $response]);
+    } catch (Exception $ex) {
+      $response = array("code" => 400, "msg" => "opps!! Unsent mail", "error" => $ex);
+      return json_encode(["response" => $response]);
+    }
   }
 
-  public function sendEmail($userMail, $userName, $valueSent = "0", $accountType = "ahorro", $typeTransfer = "externa", $isReceiving = true, $isFaild = false, $message, $table)
+  public function sendEmail($userMail, $userName, $valueSent = "0", $accountType = "ahorro", $typeTransfer = "externa", $isReceiving = true, $isFaild = false, $msgError = "error", $message, $table)
   {
     try {
 
@@ -98,7 +98,7 @@ class SendEmailController
       $table = str_replace('%valueSent%', $valueSent, $table);
       $table = str_replace('%date%', date('d F Y, h:i:s A'), $table);
 
-      $faildTable = $isFaild ? "rechazada" : $table;
+      $faildTable = $isFaild ? $msgError : $table;
 
       $message = str_replace('%userName%', $userName, $message);
       $message = str_replace('%faildTitle%', $faildTitle, $message);
@@ -106,6 +106,7 @@ class SendEmailController
       $message = str_replace('%faild%', $faild, $message);
       $message = str_replace('%typeTransfer%', $typeTransfer, $message);
       $message = str_replace('%faildTable%', $faildTable, $message);
+      $message = str_replace('%errorMsg%', $faildTable, $message);
 
       // Content
       $mail->IsHTML(true);
