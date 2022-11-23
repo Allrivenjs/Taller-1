@@ -1,6 +1,7 @@
 <?php
 
-namespace Controllers\Email;
+namespace App\Controller\Email;
+
 
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -18,6 +19,39 @@ class SendEmailController
    * @param $isFaild
    * @return string
    */
+
+
+  public function TestEmail(){
+
+          // {
+          //     "email":"correo@gmail.com",
+          //     "userName":"Hola mundo",
+          //     "valueSent": "20000",
+          //     "accountType":"ahorro",
+          //     "typeTransfer":"externa",
+          //     "isReceiving":false,
+          //     "isFaild":false
+          //   }
+
+          try {
+              $controller = new SendEmailController();
+              $data = json_decode(file_get_contents("php://input"));
+
+              $message = file_get_contents("../mail_templates/sample_mail.html");
+              $table = file_get_contents("../mail_templates/table.html");
+
+              if (!$data) {
+                  throw new Exception('no data');
+              }
+              $resp  = $controller->sendEmail($data->email, $data->userName, $data->valueSent, $data->accountType, $data->typeTransfer, $data->isReceiving, $data->isFaild, $message, $table);
+              $response = array("code" => 200, "msg" => "Mail sent successfully", "mail" => $resp);
+              return json_encode(["response" => $response]);
+          } catch (Exception $ex) {
+              $response = array("code" => 400, "msg" => "opps!! Unsent mail", "error" => $ex);
+              return json_encode(["response" => $response]);
+          }
+
+  }
 
   public function sendEmail($userMail, $userName, $valueSent = "0", $accountType = "ahorro", $typeTransfer = "externa", $isReceiving = true, $isFaild = false, $message, $table)
   {

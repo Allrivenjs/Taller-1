@@ -13,12 +13,6 @@ use mysqli_sql_exception;
 class AuthController
 {
 
-
-    public function __construct()
-    {
-
-    }
-
     /**
      * @return void
      * @throws Exception
@@ -27,7 +21,7 @@ class AuthController
     {
         $request = Request::capture();
         $UserData = sprintf("'%s'", implode("','",$request->only('identityNumber', 'identityType', 'name', 'lastname', 'address', 'phone', 'email', 'gender', 'dob', 'idUserCredentials')));
-        $data_in_token = array("user_name" => $request->only("user_name"));
+        $data_in_token = $request->only("user_name");
         $token = JWT::encode($this->GenerateToken($data_in_token), getenv('JWT_SECRET'), 'HS256');//Generate token
         $ConDB = Database::getInstance()->getConnection(); //Conection to Database
         $username = mysqli_real_escape_string($ConDB,$request->post("user_name"));
@@ -65,7 +59,9 @@ class AuthController
         /*
          * querying user data
          * */
+        
         $query_user = sprintf("SELECT uc.idRole, user.* FROM user INNER JOIN usercredentials uc on user.idUserCredentials=uc.id WHERE uc.user = '%s' AND uc.password = '%s';",$username, $password);
+        echo"$query_user";
         $stmt_user = mysqli_query($ConDB, $query_user);
         $user_row = $stmt_user->fetch_assoc();
         if (mysqli_num_rows($stmt_user) == 1) {
@@ -76,7 +72,7 @@ class AuthController
             );
 
             $token = JWT::encode($this->GenerateToken($data_in_token), getenv('JWT_SECRET'), 'HS256');//Generate token
-            http_response_code(200);
+            http_response_code(300);
             $output = array('token' => $token, 'user_data' => $user_row);
             print(json_encode($output));
             return;
