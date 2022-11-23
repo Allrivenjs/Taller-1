@@ -22,6 +22,7 @@
         "larapack/dd": "^1.1",
         "ext-mysqli": "*",
         "illuminate/http": "^9.38",
-        "firebase/php-jwt": "^6.3"
+        "firebase/php-jwt": "^6.3",
+        "phpmailer/phpmailer": "^6.6"
     }
 }

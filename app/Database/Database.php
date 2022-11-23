@@ -45,11 +45,15 @@ class Database
              * check if the variable exists, otherwise access is given with the default user.
              * */
             switch ($Rol) {
-                case 1:
-                    $UserDB = getenv('DB_USER_CLIENT');
-                    $Pass = getenv('DB_PASS_CLIENT');
+                case 3:
+                    $UserDB = getenv('DB_USER_CUSTOMER');
+                    $Pass = getenv('DB_PASS_CUSTOMER');
                     break;
                 case 2:
+                    $UserDB = getenv('DB_USER_EMPLOYEE');
+                    $Pass = getenv('DB_PASS_EMPLOYEE');
+                    break;
+                case 1:
                     $UserDB = getenv('DB_USER_ADMIN');
                     $Pass = getenv('DB_PASS_ADMIN');
                     break;
