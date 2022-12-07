@@ -1,2 +1,0 @@
-# /middleware
-En el archivo `Middleware.php` se encuentra la clase de configuración para la creación y registro de nuevos middlewares. Cuenta con una variable estatica de tipo array `middleware` en la cual se guardarán todos los middlewares creados a partir del método estatico `addMiddleware()`. Además de eso, cuenta con un método estatico getter `getMiddleware()` para poder acceder a al array de middlewares actuales.
