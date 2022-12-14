@@ -18,20 +18,45 @@ import java.util.List;
 @RequestMapping("/test")
 public class DatabaseConnection {
     private static Connection con = null;
+    private static final String url = "jdbc:mysql:// localhost:3306/bancarapida";
 
     static
     {
-        String url = "jdbc:mysql:// localhost:3306/bancarapida";
-        String user = "root";
-        String pass = "";
+        ConectarDB(null);
+    }
+
+
+    private static void ConectarDB(UserCredentials UC){
+        int Rol = (UC==null)?3:UC.getIdRole();
+        /*
+        * usuario publico solamente para hacer el login
+        * */
+        String UserDB = "root";
+        String Pass = "";
+        switch(Rol) {
+            case 3:
+                UserDB = "root";
+                Pass = "";
+                break;
+            case 2:
+                UserDB = "root";
+                Pass = "";
+                break;
+            case 1:
+                UserDB = "root";
+                Pass = "";
+                break;
+        }
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(url, user, pass);
+            con = DriverManager.getConnection(url, UserDB, Pass);
         }
         catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
+
     public static Connection getConnection()
     {
         return con;
