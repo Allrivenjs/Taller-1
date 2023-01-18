@@ -1,6 +1,9 @@
 package com.bancarapida.dao;
 
 import com.bancarapida.databaseConnection.DatabaseConnection;
+import com.bancarapida.domain.service.SendMialService;
+import com.bancarapida.model.Account;
+import com.bancarapida.model.AccountUser;
 import com.bancarapida.model.ExternalTransfer;
 
 import java.sql.Connection;
@@ -30,8 +33,24 @@ public class ExternalTransferDaoImplementation implements ExternalTransferDao{
         ps.setString(9, obj.getEAOwnerIdType());
         ps.setString(10, obj.getDescription());
         ps.setString(11, obj.getBankName());
+        Float amount = this.verifiedAmount(obj.getIdAccount());
+        SendMialService mail = new SendMialService();
+        AccountUserDaoImplementation account = new AccountUserDaoImplementation();
+        AccountUser user = new AccountUser();
+        int idAccount = Integer.parseInt(obj.getEANumber());
+        account.getAccountUser(idAccount);
+        String email = user.getEmail();
+        String idA = String.valueOf(user.getId());
+        String name = user.getName();
+        String type = user.getType();
+        int n = 0;
+        if(amount > 0){
+            n = ps.executeUpdate();
+            mail.sendEmail(email,name,obj.getAmount(),type,obj.getTransactionType(), false);
+        }else{
+            mail.sendEmail(email,name,obj.getAmount(),type,obj.getTransactionType(), true);
 
-        int n = ps.executeUpdate();
+        }
         return n;
     }
 
@@ -149,4 +168,35 @@ public class ExternalTransferDaoImplementation implements ExternalTransferDao{
         ps.setInt(12, obj.getId());
 
     }
+
+    @Override
+    public Float verifiedAmount(int Id)
+            throws SQLException
+    {
+        String query
+                = "select * from account where id= ?";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+        ps.setInt(1, Id);
+        Account obj = new Account();
+        ResultSet rs = ps.executeQuery();
+        boolean check = false;
+
+        while (rs.next()) {
+            check = true;
+            obj.setId(rs.getInt("id"));
+            obj.setAccountNumber(rs.getString("accountNumber"));
+            obj.setType(rs.getString("type"));
+            obj.setAmount(rs.getFloat("amount"));
+            obj.setIdUser(rs.getInt("idUser"));
+        }
+
+        if (check == true) {
+            return obj.getAmount();
+        }else{
+            return  null;
+        }
+    }
+
+
 }

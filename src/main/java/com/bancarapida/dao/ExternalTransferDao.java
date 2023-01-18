@@ -15,4 +15,7 @@ public interface ExternalTransferDao {
             throws SQLException;
     public void update(ExternalTransfer externalTransfer)
             throws SQLException;
+    public Float verifiedAmount(int id)
+            throws SQLException;
+
 }
