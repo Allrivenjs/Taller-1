@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Autowired
     private JwtFilterRequest  jwtFilterRequest;
-
+        //sebas and jaime
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests().antMatchers("/**/authenticate",

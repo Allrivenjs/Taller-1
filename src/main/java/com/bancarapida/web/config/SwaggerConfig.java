@@ -26,7 +26,7 @@ public class SwaggerConfig {
                 .build().apiInfo(apiEndPointInfo())
                 .securitySchemes(Arrays.asList(apiKey()));
     }
-
+    //michen and rubeslt login and register // dao doman persistence mapper
     private ApiInfo apiEndPointInfo(){
         return new ApiInfoBuilder().title("API de productos")
                 .description("Servicio para 'Bancarapida'")
