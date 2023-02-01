@@ -16,24 +16,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtFilterRequest jwtFilterRequest;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
-    @Autowired
-    private JwtFilterRequest  jwtFilterRequest;
-        //sebas and jaime
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests().antMatchers("/**/authenticate",
-                        "/**/v2/api-docs/**",
-                        "/**/swagger-resources/**",
-                        "/**/swagger-ui.html",
-                        "/**/webjars/**" ,
-                        /*Probably not needed*/ "/**/swagger.json/**").permitAll()
-                .anyRequest().authenticated().and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                "/**/v2/api-docs/**",
+                "/**/swagger-resources/**",
+                "/**/swagger-ui.html",
+                "/**/webjars/**" ,
+                /*Probably not needed*/ "/**/swagger.json/**"
+                ).permitAll().anyRequest().authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilterRequest, UsernamePasswordAuthenticationFilter.class);
     }
 

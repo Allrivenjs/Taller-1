@@ -12,6 +12,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableSwagger2
@@ -24,9 +25,9 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.bancarapida.web.controller"))
                 .paths(PathSelectors.regex("/.*"))
                 .build().apiInfo(apiEndPointInfo())
-                .securitySchemes(Arrays.asList(apiKey()));
+                .securitySchemes(List.of(apiKey()));
     }
-    //michen and rubeslt login and register // dao doman persistence mapper
+
     private ApiInfo apiEndPointInfo(){
         return new ApiInfoBuilder().title("API de productos")
                 .description("Servicio para 'Bancarapida'")
